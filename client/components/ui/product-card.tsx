@@ -20,6 +20,17 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+interface Alternative {
+  id?: string;
+  name: string;
+  price: number;
+  ecoScore: string | number;
+  isSustainable: boolean;
+  image?: string;
+  category: string;
+  layer2Alternative?: Alternative;
+}
+
 interface ProductCardProps {
   id: string;
   name: string;
@@ -30,6 +41,8 @@ interface ProductCardProps {
   image?: string;
   category: string;
   priceHistory?: { date: string; price: number }[];
+  layer1Alternative?: Alternative;
+  layer2Alternative?: Alternative;
   className?: string;
   onAddToCart?: (id: string) => void;
 }
