@@ -313,6 +313,7 @@ export default function Search() {
   const [sortBy, setSortBy] = useState("relevance");
   const [showSustainableOnly, setShowSustainableOnly] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const query = searchParams.get("q");
