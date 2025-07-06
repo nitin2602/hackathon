@@ -491,11 +491,11 @@ const mockProducts: Product[] = rawProductData.map((data, index) =>
 
 const categories = [
   "All",
-  "Stationery",
   "Kitchen",
   "Electronics",
-  "Clothing",
   "Home",
+  "Personal Care",
+  "Household",
 ];
 const sortOptions = [
   { value: "name", label: "Name" },
