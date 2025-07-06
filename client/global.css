@@ -79,41 +79,70 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 155 47% 6%;
+    --foreground: 120 60% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 155 47% 8%;
+    --card-foreground: 120 60% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 155 47% 8%;
+    --popover-foreground: 120 60% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 142 76% 45%;
+    --primary-foreground: 155 47% 6%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 155 30% 15%;
+    --secondary-foreground: 120 60% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 155 30% 15%;
+    --muted-foreground: 120 30% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 155 30% 18%;
+    --accent-foreground: 120 60% 95%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 155 30% 18%;
+    --input: 155 30% 18%;
+    --ring: 142 76% 45%;
+    --sidebar-background: 155 47% 8%;
+    --sidebar-foreground: 120 60% 90%;
+    --sidebar-primary: 142 76% 45%;
+    --sidebar-primary-foreground: 155 47% 6%;
+    --sidebar-accent: 155 30% 15%;
+    --sidebar-accent-foreground: 120 60% 95%;
+    --sidebar-border: 155 30% 18%;
+    --sidebar-ring: 142 76% 45%;
+
+    /* Eco-friendly color palette for dark mode */
+    --eco-50: 120 60% 10%;
+    --eco-100: 120 60% 15%;
+    --eco-200: 120 50% 25%;
+    --eco-300: 120 45% 35%;
+    --eco-400: 135 55% 45%;
+    --eco-500: 142 76% 45%;
+    --eco-600: 145 85% 55%;
+    --eco-700: 150 90% 65%;
+    --eco-800: 155 95% 75%;
+    --eco-900: 160 100% 85%;
+
+    /* Earth tones for dark mode */
+    --earth-50: 38 45% 8%;
+    --earth-100: 38 35% 12%;
+    --earth-200: 35 30% 18%;
+    --earth-300: 30 25% 25%;
+    --earth-400: 28 20% 35%;
+    --earth-500: 25 25% 45%;
+    --earth-600: 22 30% 55%;
+    --earth-700: 20 35% 65%;
+    --earth-800: 18 40% 75%;
+    --earth-900: 15 45% 85%;
+
+    /* Special colors for dark mode */
+    --sustainable: 120 100% 40%;
+    --carbon: 0 0% 60%;
+    --reward: 45 95% 65%;
   }
 }
 
