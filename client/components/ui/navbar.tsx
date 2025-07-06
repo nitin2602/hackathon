@@ -31,7 +31,8 @@ export function Navbar({
 
   const navItems = [
     { href: "/", label: "Home", icon: BarChart3 },
-    { href: "/products", label: "Products", icon: Search },
+    { href: "/products", label: "Products", icon: ShoppingCart },
+    { href: "/search", label: "Search", icon: Search },
     { href: "/rewards", label: "Rewards", icon: Gift },
   ];
 
