@@ -3,8 +3,22 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EcoScore } from "@/components/ui/eco-score";
 import { PriceTracker } from "@/components/ui/price-tracker";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { ShoppingCart, Leaf, TrendingDown, Eye } from "lucide-react";
+import {
+  ShoppingCart,
+  Leaf,
+  TrendingDown,
+  Eye,
+  ArrowRight,
+} from "lucide-react";
+import { useState } from "react";
 
 interface ProductCardProps {
   id: string;
