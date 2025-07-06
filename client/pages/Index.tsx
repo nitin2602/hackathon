@@ -127,7 +127,7 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar currentPath="/" ecoCredits={userStats.ecoCredits} />
+      <Navbar currentPath="/" />
 
       <main className="container mx-auto px-4 py-8">
         {/* Welcome Section */}
