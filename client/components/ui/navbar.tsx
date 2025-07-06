@@ -84,14 +84,16 @@ export function Navbar({ currentPath = "/", className }: NavbarProps) {
 
           {/* User Actions */}
           <div className="flex items-center space-x-3">
-            {/* EcoCredits */}
-            <div className="hidden sm:flex items-center space-x-2 px-3 py-1 bg-eco-100 rounded-full">
-              <Leaf className="h-4 w-4 text-eco-600" />
-              <span className="text-sm font-medium text-eco-700">
-                {ecoCredits.toLocaleString()}
-              </span>
-              <span className="text-xs text-eco-600">EcoCredits</span>
-            </div>
+            {/* EcoCredits - only show if authenticated */}
+            {isAuthenticated && user && (
+              <div className="hidden sm:flex items-center space-x-2 px-3 py-1 bg-eco-100 rounded-full">
+                <Leaf className="h-4 w-4 text-eco-600" />
+                <span className="text-sm font-medium text-eco-700">
+                  {user.ecoCredits.toLocaleString()}
+                </span>
+                <span className="text-xs text-eco-600">EcoCredits</span>
+              </div>
+            )}
 
             {/* Cart */}
             <Button variant="outline" size="sm" className="relative" asChild>
