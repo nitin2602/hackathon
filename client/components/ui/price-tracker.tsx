@@ -45,6 +45,14 @@ export function PriceTracker({
   className,
 }: PriceTrackerProps) {
   const [isTracking, setIsTracking] = useState(false);
+  const [emailAlerts, setEmailAlerts] = useState({
+    enabled: false,
+    email: "",
+    targetPrice: "",
+    frequency: "daily",
+  });
+  const [showEmailSetup, setShowEmailSetup] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   // Calculate price statistics
   const prices = priceHistory.map((p) => p.price);
