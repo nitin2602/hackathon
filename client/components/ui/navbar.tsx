@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
