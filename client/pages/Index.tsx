@@ -78,7 +78,7 @@ export default function Index() {
         badge === "EcoShopper"
           ? "🌿"
           : badge === "Offset Champion"
-            ? "🚴"
+            ? "��"
             : badge === "Tree Planter"
               ? "🌳"
               : badge === "Recycler"
@@ -160,7 +160,7 @@ export default function Index() {
                     CO₂ Saved This Month
                   </p>
                   <p className="text-2xl font-bold text-foreground">
-                    {userStats.co2SavedThisMonth}kg
+                    {userStats.co2SavedThisMonth.toFixed(2)}kg
                   </p>
                 </div>
                 <TrendingUp className="h-8 w-8 text-eco-500" />
@@ -176,7 +176,7 @@ export default function Index() {
                     Lifetime CO₂ Saved
                   </p>
                   <p className="text-2xl font-bold text-foreground">
-                    {userStats.co2SavedLifetime}kg
+                    {userStats.co2SavedLifetime.toFixed(2)}kg
                   </p>
                 </div>
                 <TreePine className="h-8 w-8 text-earth-500" />
