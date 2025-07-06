@@ -15,6 +15,7 @@ interface ProductCardProps {
   isSustainable: boolean;
   image?: string;
   category: string;
+  priceHistory?: { date: string; price: number }[];
   className?: string;
   onAddToCart?: (id: string) => void;
 }
