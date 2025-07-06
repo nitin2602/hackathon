@@ -70,38 +70,30 @@ export default function Profile() {
 
   const userStats = user;
 
-  const recentBadges = [
-    {
-      name: "EcoShopper",
-      icon: "🌿",
-      description: "Made 10 sustainable purchases",
-      earnedDate: "2024-01-20",
-    },
-    {
-      name: "Offset Champion",
-      icon: "🚴",
-      description: "Offset delivery carbon 5 times",
-      earnedDate: "2024-01-15",
-    },
-    {
-      name: "Tree Planter",
-      icon: "🌳",
-      description: "Planted 3 trees through rewards",
-      earnedDate: "2024-01-10",
-    },
-    {
-      name: "Recycler",
-      icon: "♻️",
-      description: "Recycled 15+ items",
-      earnedDate: "2024-01-05",
-    },
-    {
-      name: "Green Starter",
-      icon: "🌱",
-      description: "Completed first eco purchase",
-      earnedDate: "2024-01-01",
-    },
-  ];
+  const recentBadges = user.badgesEarned.map((badge) => ({
+    name: badge,
+    icon:
+      badge === "EcoShopper"
+        ? "🌿"
+        : badge === "Offset Champion"
+          ? "🚴"
+          : badge === "Tree Planter"
+            ? "🌳"
+            : badge === "Recycler"
+              ? "♻️"
+              : "🌱",
+    description:
+      badge === "EcoShopper"
+        ? "Made 10 sustainable purchases"
+        : badge === "Offset Champion"
+          ? "Offset delivery carbon 5 times"
+          : badge === "Tree Planter"
+            ? "Planted trees through rewards"
+            : badge === "Recycler"
+              ? "Recycled items for the environment"
+              : "Started your eco journey",
+    earnedDate: new Date().toISOString().split("T")[0], // Today's date as placeholder
+  }));
 
   const sustainabilityGoals = [
     {
