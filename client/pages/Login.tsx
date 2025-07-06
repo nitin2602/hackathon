@@ -13,18 +13,27 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError("");
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const success = await login(email, password);
+      if (success) {
+        navigate("/");
+      } else {
+        setError("Invalid email or password");
+      }
+    } catch (err) {
+      setError("Login failed. Please try again.");
+    } finally {
       setIsLoading(false);
-      // In a real app, you'd validate credentials here
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
