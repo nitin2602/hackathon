@@ -21,6 +21,7 @@ import {
 
 export default function Index() {
   const { user, isAuthenticated } = useAuth();
+  const { getRecentActivities } = useActivity();
 
   // If not authenticated, redirect to login or show public page
   if (!isAuthenticated || !user) {
