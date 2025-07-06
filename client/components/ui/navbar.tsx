@@ -174,17 +174,19 @@ export function Navbar({ currentPath = "/", className }: NavbarProps) {
               })}
 
               {/* Mobile EcoCredits */}
-              <div className="flex items-center justify-between px-3 py-2 mt-4 bg-eco-100 rounded-md">
-                <div className="flex items-center space-x-2">
-                  <Leaf className="h-4 w-4 text-eco-600" />
-                  <span className="text-sm font-medium text-eco-700">
-                    EcoCredits
+              {isAuthenticated && user && (
+                <div className="flex items-center justify-between px-3 py-2 mt-4 bg-eco-100 rounded-md">
+                  <div className="flex items-center space-x-2">
+                    <Leaf className="h-4 w-4 text-eco-600" />
+                    <span className="text-sm font-medium text-eco-700">
+                      EcoCredits
+                    </span>
+                  </div>
+                  <span className="text-sm font-bold text-eco-700">
+                    {user.ecoCredits.toLocaleString()}
                   </span>
                 </div>
-                <span className="text-sm font-bold text-eco-700">
-                  {ecoCredits.toLocaleString()}
-                </span>
-              </div>
+              )}
             </div>
           </div>
         )}
