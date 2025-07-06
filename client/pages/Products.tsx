@@ -529,7 +529,7 @@ export default function Products() {
         case "price-high":
           return b.price - a.price;
         case "eco-score":
-          return a.ecoScore.localeCompare(b.ecoScore);
+          return b.ecoScore - a.ecoScore;
         case "co2":
           return a.co2 - b.co2;
         default:
