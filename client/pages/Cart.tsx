@@ -67,7 +67,7 @@ export default function Cart() {
   if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-        <Navbar currentPath="/cart" ecoCredits={1245} cartCount={0} />
+        <Navbar currentPath="/cart" ecoCredits={1245} />
         <main className="container mx-auto px-4 py-8">
           <div className="text-center">
             <Card className="max-w-md mx-auto">
@@ -80,7 +80,7 @@ export default function Cart() {
                   Start shopping for eco-friendly products!
                 </p>
                 <Button asChild>
-                  <a href="/products">Browse Products</a>
+                  <Link to="/products">Browse Products</Link>
                 </Button>
               </CardContent>
             </Card>
