@@ -17,6 +17,7 @@ import {
   TrendingDown,
   Eye,
   ArrowRight,
+  Bell,
 } from "lucide-react";
 import { useState } from "react";
 
