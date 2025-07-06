@@ -45,7 +45,7 @@ export function Navbar({
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-eco-500 to-eco-600">
               <Leaf className="h-5 w-5 text-white" />
             </div>
@@ -57,7 +57,7 @@ export function Navbar({
                 Sustainable Shopping
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
