@@ -65,9 +65,9 @@ export function Navbar({
               const Icon = item.icon;
               const isActive = currentPath === item.href;
               return (
-                <a
+                <Link
                   key={item.href}
-                  href={item.href}
+                  to={item.href}
                   className={cn(
                     "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
                     isActive
@@ -77,7 +77,7 @@ export function Navbar({
                 >
                   <Icon className="h-4 w-4" />
                   <span>{item.label}</span>
-                </a>
+                </Link>
               );
             })}
           </div>
