@@ -136,7 +136,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar currentPath="/profile" ecoCredits={userStats.ecoCredits} />
+      <Navbar currentPath="/profile" />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
