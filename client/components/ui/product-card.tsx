@@ -46,12 +46,32 @@ export function ProductCard({
             src={image}
             alt={name}
             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-200"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = "none";
+              const fallback = target.nextSibling as HTMLElement;
+              if (fallback) fallback.style.display = "flex";
+            }}
           />
-        ) : (
-          <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-muted to-muted/80">
-            <div className="text-muted-foreground text-4xl">📦</div>
+        ) : null}
+        <div
+          className="flex items-center justify-center w-full h-full bg-gradient-to-br from-muted to-muted/80"
+          style={{ display: image ? "none" : "flex" }}
+        >
+          <div className="text-muted-foreground text-4xl">
+            {category === "Kitchen"
+              ? "🍽️"
+              : category === "Electronics"
+                ? "📱"
+                : category === "Clothing"
+                  ? "👕"
+                  : category === "Home"
+                    ? "🏠"
+                    : category === "Stationery"
+                      ? "📝"
+                      : "📦"}
           </div>
-        )}
+        </div>
 
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
