@@ -77,21 +77,27 @@ const getCategory = (name: string): string => {
 const getProductImage = (name: string): string => {
   const imageMap: Record<string, string> = {
     "Plastic Water Bottle":
-      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1603833665858-e61d17a86224?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Stainless Steel Bottle":
-      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Copper Bottle":
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Plastic Straw":
-      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Metal Straw":
-      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Bamboo Straw":
-      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1616481870046-c13e2c8e24c9?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Plastic Shopping Bag":
+      "https://images.unsplash.com/photo-1573160813959-df05c1b1b5a4?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Cotton Tote Bag":
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Hemp Grocery Bag":
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
   };
   return (
     imageMap[name] ||
-    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop"
+    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=500&fit=crop&crop=center&auto=format&q=80"
   );
 };
 
