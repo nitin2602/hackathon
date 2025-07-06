@@ -29,6 +29,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function Profile() {
+  const { user, isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState({
     email: true,
     push: false,
@@ -36,27 +37,38 @@ export default function Profile() {
     rewards: true,
   });
 
-  const [profile, setProfile] = useState({
-    name: "Alex Johnson",
-    email: "alex.johnson@email.com",
-    phone: "+91 98765 43210",
-    location: "Mumbai, Maharashtra",
-    memberSince: "January 2024",
-  });
+  // Redirect if not authenticated
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
+        <Navbar currentPath="/profile" />
+        <main className="container mx-auto px-4 py-8 text-center">
+          <Card className="max-w-md mx-auto">
+            <CardContent className="p-12">
+              <User className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+              <p className="text-muted-foreground mb-4">
+                Please log in to view your profile.
+              </p>
+              <Button asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </main>
+      </div>
+    );
+  }
 
-  // Mock user statistics
-  const userStats = {
-    ecoCredits: 1245,
-    co2SavedTotal: 156.8,
-    co2SavedThisMonth: 12.4,
-    purchasesCount: 42,
-    recycledItems: 18,
-    treesPlanted: 3,
-    badgesEarned: 5,
-    currentLevel: "Eco Champion",
-    nextLevel: "Planet Protector",
-    progressToNext: 75,
+  const profile = {
+    name: user.name,
+    email: user.email,
+    phone: "+91 98765 43210", // Default for now
+    location: "Mumbai, Maharashtra", // Default for now
+    memberSince: user.memberSince,
   };
+
+  const userStats = user;
 
   const recentBadges = [
     {
