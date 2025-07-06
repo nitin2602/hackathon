@@ -19,17 +19,13 @@ import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   currentPath?: string;
-  ecoCredits?: number;
   className?: string;
 }
 
-export function Navbar({
-  currentPath = "/",
-  ecoCredits = 0,
-  className,
-}: NavbarProps) {
+export function Navbar({ currentPath = "/", className }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const cartCount = getTotalItems();
 
   const navItems = [
