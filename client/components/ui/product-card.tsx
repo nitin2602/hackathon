@@ -134,7 +134,7 @@ export function ProductCard({
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-4 pt-0 space-y-2">
         <Button
           onClick={() => onAddToCart?.(id)}
           className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
@@ -143,6 +143,16 @@ export function ProductCard({
           <ShoppingCart className="h-4 w-4 mr-2" />
           Add to Cart
         </Button>
+
+        {priceHistory.length > 0 && (
+          <PriceTracker
+            productId={id}
+            productName={name}
+            currentPrice={price}
+            priceHistory={priceHistory}
+            className="w-full"
+          />
+        )}
       </CardFooter>
     </Card>
   );
