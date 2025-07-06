@@ -20,6 +20,7 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
