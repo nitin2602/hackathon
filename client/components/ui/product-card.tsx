@@ -99,7 +99,7 @@ export function ProductCard({
 
         {/* EcoScore */}
         <div className="absolute top-2 right-2">
-          <EcoScore score={ecoScore} size="sm" />
+          <EcoScore score={ecoGrade} size="sm" />
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export function ProductCard({
 
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold text-foreground">
-              ��{price.toLocaleString()}
+              ₹{price.toLocaleString()}
             </div>
             <div className="text-right">
               <div className="text-xs text-muted-foreground">Carbon Impact</div>
