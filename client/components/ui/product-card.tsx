@@ -29,6 +29,7 @@ export function ProductCard({
   isSustainable,
   image,
   category,
+  priceHistory = [],
   className,
   onAddToCart,
 }: ProductCardProps) {
