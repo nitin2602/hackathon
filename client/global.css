@@ -10,50 +10,72 @@
   */
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 155 47% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 155 47% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 155 47% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 142 25% 95%;
+    --secondary-foreground: 155 47% 12%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 142 25% 95%;
+    --muted-foreground: 155 20% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 120 60% 90%;
+    --accent-foreground: 155 47% 12%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 142 25% 88%;
+    --input: 142 25% 88%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-background: 142 25% 98%;
+    --sidebar-foreground: 155 30% 25%;
+    --sidebar-primary: 142 76% 36%;
     --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 142 25% 95%;
+    --sidebar-accent-foreground: 155 47% 12%;
+    --sidebar-border: 142 25% 88%;
+    --sidebar-ring: 142 76% 36%;
 
-    --sidebar-accent: 240 4.8% 95.9%;
+    /* Eco-friendly color palette */
+    --eco-50: 120 60% 97%;
+    --eco-100: 120 60% 90%;
+    --eco-200: 120 50% 80%;
+    --eco-300: 120 45% 68%;
+    --eco-400: 135 55% 55%;
+    --eco-500: 142 76% 36%;
+    --eco-600: 145 85% 30%;
+    --eco-700: 150 90% 25%;
+    --eco-800: 155 95% 20%;
+    --eco-900: 160 100% 15%;
 
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    /* Earth tones */
+    --earth-50: 38 45% 96%;
+    --earth-100: 38 35% 88%;
+    --earth-200: 35 30% 75%;
+    --earth-300: 30 25% 62%;
+    --earth-400: 28 20% 50%;
+    --earth-500: 25 25% 40%;
+    --earth-600: 22 30% 32%;
+    --earth-700: 20 35% 25%;
+    --earth-800: 18 40% 18%;
+    --earth-900: 15 45% 12%;
 
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Special colors */
+    --sustainable: 120 100% 25%;
+    --carbon: 0 0% 40%;
+    --reward: 45 95% 55%;
   }
 
   .dark {
