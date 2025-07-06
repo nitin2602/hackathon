@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useCart } from "@/context/CartContext";
 
 interface Product {
   id: string;
