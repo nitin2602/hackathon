@@ -540,8 +540,10 @@ export default function Products() {
     });
 
   const handleAddToCart = (productId: string) => {
-    console.log("Adding product to cart:", productId);
-    // In a real app, this would update cart state
+    const product = filteredProducts.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product);
+    }
   };
 
   return (
