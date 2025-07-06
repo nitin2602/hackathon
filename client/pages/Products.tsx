@@ -548,7 +548,7 @@ export default function Products() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar currentPath="/products" ecoCredits={1245} cartCount={2} />
+      <Navbar currentPath="/products" ecoCredits={1245} />
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
