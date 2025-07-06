@@ -188,9 +188,11 @@ export default function Index() {
                 Earn {100 - userStats.nextRewardProgress} more EcoCredits to
                 unlock your reward!
               </p>
-              <Button className="w-full" variant="outline">
-                <Gift className="h-4 w-4 mr-2" />
-                View All Rewards
+              <Button className="w-full" variant="outline" asChild>
+                <Link to="/rewards">
+                  <Gift className="h-4 w-4 mr-2" />
+                  View All Rewards
+                </Link>
               </Button>
             </CardContent>
           </Card>
