@@ -133,9 +133,9 @@ export function Navbar({
                 const Icon = item.icon;
                 const isActive = currentPath === item.href;
                 return (
-                  <a
+                  <Link
                     key={item.href}
-                    href={item.href}
+                    to={item.href}
                     className={cn(
                       "flex items-center space-x-3 px-3 py-2 rounded-md text-base font-medium transition-colors",
                       isActive
@@ -146,7 +146,7 @@ export function Navbar({
                   >
                     <Icon className="h-5 w-5" />
                     <span>{item.label}</span>
-                  </a>
+                  </Link>
                 );
               })}
 
