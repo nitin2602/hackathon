@@ -36,19 +36,16 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
 
   // Calculations
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
-  const totalCO2 = cartItems.reduce(
-    (sum, item) => sum + item.co2 * item.quantity,
-    0,
-  );
+  const subtotal = getTotalPrice();
+  const totalCO2 = getTotalCO2();
+  const totalItems = getTotalItems();
   const averageEcoScore =
-    cartItems.reduce(
-      (sum, item) => sum + item.sustainabilityScore * item.quantity,
-      0,
-    ) / cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    totalItems > 0
+      ? cartItems.reduce(
+          (sum, item) => sum + (item.sustainabilityScore || 50) * item.quantity,
+          0,
+        ) / totalItems
+      : 0;
 
   const deliveryFee = subtotal > 500 ? 0 : 49;
   const offsetFee = deliveryOffset ? 5 : 0;
@@ -283,7 +280,7 @@ export default function Cart() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>��{subtotal.toLocaleString()}</span>
+                  <span>₹{subtotal.toLocaleString()}</span>
                 </div>
 
                 <div className="flex justify-between">
