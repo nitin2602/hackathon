@@ -135,7 +135,7 @@ export default function Rewards() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar currentPath="/rewards" ecoCredits={currentEcoCredits} />
+      <Navbar currentPath="/rewards" />
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
