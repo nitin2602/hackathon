@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Leaf, Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
