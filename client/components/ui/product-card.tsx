@@ -348,15 +348,32 @@ export function ProductCard({
           )}
         </div>
 
-        {priceHistory.length > 0 && (
-          <PriceTracker
-            productId={id}
-            productName={name}
-            currentPrice={price}
-            priceHistory={priceHistory}
-            className="w-full"
-          />
-        )}
+        <div className="flex gap-2">
+          {priceHistory.length > 0 && (
+            <PriceTracker
+              productId={id}
+              productName={name}
+              currentPrice={price}
+              priceHistory={priceHistory}
+              className="flex-1"
+            />
+          )}
+
+          {/* Quick Price Alert Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100"
+            onClick={() => {
+              // Quick alert setup - in real app would show modal
+              alert(
+                `Price alert set for ${name}! You'll be notified when the price drops below ₹${price.toLocaleString()}.`,
+              );
+            }}
+          >
+            <Bell className="h-4 w-4" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
