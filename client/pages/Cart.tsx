@@ -21,74 +21,19 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  co2: number;
-  ecoScore: string;
-  isSustainable: boolean;
-  image?: string;
-  category: string;
-  quantity: number;
-  sustainabilityScore: number;
-}
-
-const mockCartItems: CartItem[] = [
-  {
-    id: "7",
-    name: "Plastic Storage Containers",
-    price: 399,
-    co2: 3.5,
-    ecoScore: "D",
-    isSustainable: false,
-    category: "Home",
-    quantity: 2,
-    sustainabilityScore: 35,
-    image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
-  },
-  {
-    id: "2",
-    name: "Stainless Steel Water Bottle",
-    price: 899,
-    co2: 1.2,
-    ecoScore: "A",
-    isSustainable: true,
-    category: "Kitchen",
-    quantity: 1,
-    sustainabilityScore: 85,
-    image:
-      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
-  },
-];
-
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+  const {
+    cartItems,
+    updateQuantity,
+    removeFromCart,
+    addToCart,
+    getTotalItems,
+    getTotalPrice,
+    getTotalCO2,
+  } = useCart();
   const [showAlternatives, setShowAlternatives] = useState<string | null>(null);
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [couponCode, setCouponCode] = useState("");
-
-  const updateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity <= 0) {
-      removeItem(id);
-      return;
-    }
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item,
-      ),
-    );
-  };
-
-  const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  const addToCart = (productId: string) => {
-    console.log("Adding product to cart:", productId);
-    // This would typically update cart state
-  };
 
   // Calculations
   const subtotal = cartItems.reduce(
@@ -338,7 +283,7 @@ export default function Cart() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>₹{subtotal.toLocaleString()}</span>
+                  <span>��{subtotal.toLocaleString()}</span>
                 </div>
 
                 <div className="flex justify-between">
