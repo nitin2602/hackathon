@@ -76,32 +76,14 @@ export default function Index() {
     })),
   };
 
-  const recentActivity = [
-    {
-      id: 1,
-      action: "Purchased",
-      item: "Recycled Notebook",
-      co2Saved: 0.4,
-      ecoCredits: 25,
-      date: "2 hours ago",
-    },
-    {
-      id: 2,
-      action: "Offset Delivery",
-      item: "Eco-friendly cleaning supplies",
-      co2Saved: 0.8,
-      ecoCredits: 5,
-      date: "1 day ago",
-    },
-    {
-      id: 3,
-      action: "Recycled",
-      item: "Plastic bottles x5",
-      co2Saved: 0.2,
-      ecoCredits: 15,
-      date: "3 days ago",
-    },
-  ];
+  const recentActivity = getRecentActivities(5).map((activity) => ({
+    id: activity.id,
+    action: activity.action,
+    item: activity.item,
+    co2Saved: activity.co2Saved || 0,
+    ecoCredits: activity.ecoCredits,
+    date: getTimeAgo(activity.timestamp),
+  }));
 
   const quickActions = [
     {
