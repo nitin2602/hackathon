@@ -213,7 +213,7 @@ export default function Index() {
                     className="w-full justify-start h-auto p-4"
                     asChild
                   >
-                    <a href={action.href}>
+                    <Link to={action.href}>
                       <div
                         className={`w-10 h-10 rounded-lg ${action.color} flex items-center justify-center mr-3`}
                       >
@@ -225,7 +225,7 @@ export default function Index() {
                           {action.description}
                         </p>
                       </div>
-                    </a>
+                    </Link>
                   </Button>
                 );
               })}
