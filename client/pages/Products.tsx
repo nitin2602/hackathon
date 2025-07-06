@@ -23,6 +23,7 @@ interface Product {
   isSustainable: boolean;
   image?: string;
   category: string;
+  priceHistory?: { date: string; price: number }[];
 }
 
 const mockProducts: Product[] = [
