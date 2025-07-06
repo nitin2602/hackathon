@@ -76,41 +76,162 @@ const getCategory = (name: string): string => {
 
 const getProductImage = (name: string): string => {
   const imageMap: Record<string, string> = {
+    // Water Bottles
     "Plastic Water Bottle":
-      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1603833665858-e61d17a86224?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Stainless Steel Bottle":
-      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Copper Bottle":
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Straws
     "Plastic Straw":
-      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Metal Straw":
-      "https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Bamboo Straw":
-      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1616481870046-c13e2c8e24c9?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Shopping Bags
     "Plastic Shopping Bag":
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1573160813959-df05c1b1b5a4?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Cotton Tote Bag":
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Hemp Grocery Bag":
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Razors
     "Disposable Razor":
-      "https://images.unsplash.com/photo-1499196737800-6026dfe88d3a?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1631730453615-7cb5b1834d28?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Metal Razor with Replaceable Blades":
-      "https://images.unsplash.com/photo-1499196737800-6026dfe88d3a?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1499196737800-6026dfe88d3a?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Bamboo Razor":
-      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1616081180580-a3d30a0c6cc9?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Toilet Paper
     "Regular Toilet Paper":
-      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Recycled Toilet Paper":
-      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
     "Bamboo Toilet Paper":
-      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1616182010067-52fb7929ee37?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Cutlery
+    "Plastic Cutlery Set":
+      "https://images.unsplash.com/photo-1578509493706-8029e17c1a6f?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Steel Cutlery Set":
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Bamboo Cutlery Set":
+      "https://images.unsplash.com/photo-1591884735890-1dd7ac1b1777?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Detergent
+    "Conventional Detergent":
+      "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Eco-Friendly Liquid Detergent":
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Detergent Sheets":
+      "https://images.unsplash.com/photo-1611946240103-e0b8cd1d1bb2?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Loofah
+    "Synthetic Loofah":
+      "https://images.unsplash.com/photo-1556909114-d6da3b98c35a?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Natural Loofah":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Bamboo Fiber Loofah":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Food Wrap
+    "Plastic Food Wrap":
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Beeswax Wrap":
+      "https://images.unsplash.com/photo-1616081180580-a3d30a0c6cc9?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Silicone Stretch Lids":
+      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Batteries
+    "Non-rechargeable Batteries":
+      "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Rechargeable Batteries":
+      "https://images.unsplash.com/photo-1593642532871-8b12e02d091c?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Solar Batteries":
+      "https://images.unsplash.com/photo-1593642532871-8b12e02d091c?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Toothbrush
+    "Plastic Toothbrush":
+      "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Bamboo Toothbrush":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Compostable Corn-Based Brush":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Coffee Cup
+    "Plastic Coffee Cup":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Reusable Coffee Cup":
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Insulated Stainless Cup":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // LED Bulb
+    "LED Bulb (Old Gen)":
+      "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Energy-Efficient LED Bulb":
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Smart LED Bulb":
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Lunch Box
+    "Plastic Lunch Box":
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Glass Lunch Box":
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Stainless Steel Tiffin":
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Pan
+    "Non-stick Pan (Teflon)":
+      "https://images.unsplash.com/photo-1556909114-d6da3b98c35a?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Cast Iron Pan":
+      "https://images.unsplash.com/photo-1544985361-b420d7a77043?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Ceramic Pan":
+      "https://images.unsplash.com/photo-1556909125-7e0d2ab8430c?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Cleaner
+    "Chemical Cleaner Spray":
+      "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Eco Surface Cleaner":
+      "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Vinegar-Based Multi-Cleaner":
+      "https://images.unsplash.com/photo-1611946240103-e0b8cd1d1bb2?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Hair Comb
+    "Plastic Hair Comb":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Wooden Comb":
+      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Bamboo Comb":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Shampoo
+    "Conventional Shampoo":
+      "https://images.unsplash.com/photo-1556909114-d6da3b98c35a?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Refillable Shampoo Bottle":
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Solid Shampoo Bar":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+
+    // Aluminum Foil
+    "Aluminum Foil":
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Silicone Baking Mat":
+      "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
+    "Compostable Parchment Paper":
+      "https://images.unsplash.com/photo-1616081080072-7b653a0ba829?w=500&h=500&fit=crop&crop=center&auto=format&q=80",
   };
 
   return (
     imageMap[name] ||
-    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=400&fit=crop"
+    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=500&fit=crop&crop=center&auto=format&q=80"
   );
 };
 
