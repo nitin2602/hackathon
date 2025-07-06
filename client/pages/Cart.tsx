@@ -32,6 +32,7 @@ export default function Cart() {
     getTotalPrice,
     getTotalCO2,
   } = useCart();
+  const { user } = useAuth();
   const [showAlternatives, setShowAlternatives] = useState<string | null>(null);
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [couponCode, setCouponCode] = useState("");
