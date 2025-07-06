@@ -58,12 +58,22 @@ export default function Signup() {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const success = await signup(
+        formData.name,
+        formData.email,
+        formData.password,
+      );
+      if (success) {
+        navigate("/");
+      } else {
+        setErrors({ email: "Account with this email already exists" });
+      }
+    } catch (err) {
+      setErrors({ general: "Signup failed. Please try again." });
+    } finally {
       setIsLoading(false);
-      // In a real app, you'd create the account here
-      navigate("/login");
-    }, 1000);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
