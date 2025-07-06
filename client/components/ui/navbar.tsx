@@ -18,17 +18,17 @@ import { cn } from "@/lib/utils";
 interface NavbarProps {
   currentPath?: string;
   ecoCredits?: number;
-  cartCount?: number;
   className?: string;
 }
 
 export function Navbar({
   currentPath = "/",
   ecoCredits = 0,
-  cartCount = 0,
   className,
 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { getTotalItems } = useCart();
+  const cartCount = getTotalItems();
 
   const navItems = [
     { href: "/", label: "Home", icon: BarChart3 },
