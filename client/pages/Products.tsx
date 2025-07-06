@@ -511,6 +511,7 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("name");
   const [showSustainableOnly, setShowSustainableOnly] = useState(false);
+  const { addToCart } = useCart();
 
   // Filter and sort products
   const filteredProducts = mockProducts
