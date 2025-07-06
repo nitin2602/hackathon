@@ -19,20 +19,59 @@ import {
 } from "lucide-react";
 
 export default function Index() {
-  // Mock user data - in a real app this would come from auth context
+  const { user, isAuthenticated } = useAuth();
+
+  // If not authenticated, redirect to login or show public page
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
+        <Navbar currentPath="/" />
+        <main className="container mx-auto px-4 py-8 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold text-foreground mb-4">
+              Welcome to EcoCreds! 🌱
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Start your sustainable shopping journey today. Track your carbon
+              footprint, earn EcoCredits, and make a positive impact on the
+              planet.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button asChild size="lg">
+                <Link to="/signup">Get Started</Link>
+              </Button>
+              <Button variant="outline" asChild size="lg">
+                <Link to="/login">Sign In</Link>
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const userStats = {
-    name: "Alex Johnson",
-    ecoCredits: 1245,
-    co2SavedThisMonth: 12.4,
-    co2SavedLifetime: 156.8,
-    recentPurchases: 8,
-    nextRewardProgress: 75,
+    name: user.name,
+    ecoCredits: user.ecoCredits,
+    co2SavedThisMonth: user.co2SavedThisMonth,
+    co2SavedLifetime: user.co2SavedTotal,
+    recentPurchases: user.purchasesCount,
+    nextRewardProgress: user.progressToNext,
     nextReward: "₹50 Walmart Coupon",
-    badges: [
-      { name: "EcoShopper", icon: "🌿", earned: true },
-      { name: "Offset Champion", icon: "🚴", earned: true },
-      { name: "Tree Planter", icon: "🌳", earned: false },
-    ],
+    badges: user.badgesEarned.map((badge) => ({
+      name: badge,
+      icon:
+        badge === "EcoShopper"
+          ? "🌿"
+          : badge === "Offset Champion"
+            ? "🚴"
+            : badge === "Tree Planter"
+              ? "🌳"
+              : badge === "Recycler"
+                ? "♻️"
+                : "🌱",
+      earned: true,
+    })),
   };
 
   const recentActivity = [
