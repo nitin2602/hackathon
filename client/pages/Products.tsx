@@ -35,6 +35,13 @@ const mockProducts: Product[] = [
     ecoScore: "A",
     isSustainable: true,
     category: "Stationery",
+    image:
+      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 140 },
+      { date: "2024-01-15", price: 130 },
+      { date: "2024-01-30", price: 120 },
+    ],
   },
   {
     id: "2",
@@ -44,6 +51,13 @@ const mockProducts: Product[] = [
     ecoScore: "A",
     isSustainable: true,
     category: "Kitchen",
+    image:
+      "https://images.unsplash.com/photo-1523362628745-0c100150b504?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 999 },
+      { date: "2024-01-15", price: 950 },
+      { date: "2024-01-30", price: 899 },
+    ],
   },
   {
     id: "3",
@@ -53,6 +67,13 @@ const mockProducts: Product[] = [
     ecoScore: "C",
     isSustainable: false,
     category: "Kitchen",
+    image:
+      "https://images.unsplash.com/photo-1544985361-b420d7a77043?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 2699 },
+      { date: "2024-01-15", price: 2599 },
+      { date: "2024-01-30", price: 2499 },
+    ],
   },
   {
     id: "4",
@@ -62,6 +83,13 @@ const mockProducts: Product[] = [
     ecoScore: "A",
     isSustainable: true,
     category: "Electronics",
+    image:
+      "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 699 },
+      { date: "2024-01-15", price: 679 },
+      { date: "2024-01-30", price: 649 },
+    ],
   },
   {
     id: "5",
@@ -71,6 +99,13 @@ const mockProducts: Product[] = [
     ecoScore: "B",
     isSustainable: true,
     category: "Clothing",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 849 },
+      { date: "2024-01-15", price: 829 },
+      { date: "2024-01-30", price: 799 },
+    ],
   },
   {
     id: "6",
@@ -80,6 +115,13 @@ const mockProducts: Product[] = [
     ecoScore: "B",
     isSustainable: true,
     category: "Electronics",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 1399 },
+      { date: "2024-01-15", price: 1349 },
+      { date: "2024-01-30", price: 1299 },
+    ],
   },
   {
     id: "7",
@@ -89,6 +131,13 @@ const mockProducts: Product[] = [
     ecoScore: "D",
     isSustainable: false,
     category: "Home",
+    image:
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 449 },
+      { date: "2024-01-15", price: 429 },
+      { date: "2024-01-30", price: 399 },
+    ],
   },
   {
     id: "8",
@@ -98,6 +147,13 @@ const mockProducts: Product[] = [
     ecoScore: "A",
     isSustainable: true,
     category: "Electronics",
+    image:
+      "https://images.unsplash.com/photo-1593642532871-8b12e02d091c?w=400&h=400&fit=crop",
+    priceHistory: [
+      { date: "2024-01-01", price: 1999 },
+      { date: "2024-01-15", price: 1949 },
+      { date: "2024-01-30", price: 1899 },
+    ],
   },
 ];
 
