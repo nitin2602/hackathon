@@ -176,14 +176,177 @@ export function ProductCard({
       </CardContent>
 
       <CardFooter className="p-4 pt-0 space-y-2">
-        <Button
-          onClick={() => onAddToCart?.(id)}
-          className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-          variant="outline"
-        >
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          Add to Cart
-        </Button>
+        <div className="flex gap-2 w-full">
+          <Button
+            onClick={() => onAddToCart?.(id)}
+            className="flex-1 group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
+            variant="outline"
+          >
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            Add to Cart
+          </Button>
+
+          {layer1Alternative && !isSustainable && (
+            <Dialog open={showAlternatives} onOpenChange={setShowAlternatives}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="bg-eco-50 border-eco-300 text-eco-700 hover:bg-eco-100"
+                >
+                  <Leaf className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Leaf className="h-5 w-5 text-eco-500" />
+                    🌱 Green Alternatives Available
+                  </DialogTitle>
+                </DialogHeader>
+
+                <div className="space-y-4">
+                  <div className="bg-eco-50 border border-eco-200 p-4 rounded-lg">
+                    <p className="text-eco-700 font-medium mb-2">
+                      💡 Consider these eco-friendly alternatives instead:
+                    </p>
+                    <p className="text-sm text-eco-600">
+                      Making sustainable choices helps reduce environmental
+                      impact and often provides better long-term value!
+                    </p>
+                  </div>
+
+                  {/* Layer 1 Alternative */}
+                  <Card className="border-eco-200">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-4">
+                        {layer1Alternative.image && (
+                          <img
+                            src={layer1Alternative.image}
+                            alt={layer1Alternative.name}
+                            className="w-16 h-16 rounded-lg object-cover"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg">
+                            {layer1Alternative.name}
+                          </h3>
+                          <div className="flex items-center gap-3 mt-1">
+                            <span className="text-xl font-bold text-primary">
+                              ₹{layer1Alternative.price.toLocaleString()}
+                            </span>
+                            <Badge className="bg-eco-500 text-white">
+                              Score:{" "}
+                              {typeof layer1Alternative.ecoScore === "number"
+                                ? layer1Alternative.ecoScore
+                                : layer1Alternative.ecoScore}
+                              /100
+                            </Badge>
+                            <span className="text-sm text-eco-600">
+                              +₹{layer1Alternative.price - price} vs original
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            onAddToCart?.(layer1Alternative.id || `${id}_alt1`);
+                            setShowAlternatives(false);
+                          }}
+                          className="bg-eco-500 hover:bg-eco-600"
+                        >
+                          <ShoppingCart className="h-4 w-4 mr-2" />
+                          Add This
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Layer 2 Alternative */}
+                  {layer1Alternative.layer2Alternative && (
+                    <Card className="border-eco-300 bg-eco-50">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Badge className="bg-eco-600 text-white">
+                            BEST CHOICE
+                          </Badge>
+                          <span className="text-sm text-eco-600">
+                            Top 10% sustainability rating
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          {layer1Alternative.layer2Alternative.image && (
+                            <img
+                              src={layer1Alternative.layer2Alternative.image}
+                              alt={layer1Alternative.layer2Alternative.name}
+                              className="w-16 h-16 rounded-lg object-cover"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg">
+                              {layer1Alternative.layer2Alternative.name}
+                            </h3>
+                            <div className="flex items-center gap-3 mt-1">
+                              <span className="text-xl font-bold text-primary">
+                                ₹
+                                {layer1Alternative.layer2Alternative.price.toLocaleString()}
+                              </span>
+                              <Badge className="bg-eco-600 text-white">
+                                Score:{" "}
+                                {typeof layer1Alternative.layer2Alternative
+                                  .ecoScore === "number"
+                                  ? layer1Alternative.layer2Alternative.ecoScore
+                                  : layer1Alternative.layer2Alternative
+                                      .ecoScore}
+                                /100
+                              </Badge>
+                              <span className="text-sm text-eco-600">
+                                +₹
+                                {layer1Alternative.layer2Alternative.price -
+                                  price}{" "}
+                                vs original
+                              </span>
+                            </div>
+                          </div>
+                          <Button
+                            onClick={() => {
+                              onAddToCart?.(
+                                layer1Alternative.layer2Alternative?.id ||
+                                  `${id}_alt2`,
+                              );
+                              setShowAlternatives(false);
+                            }}
+                            className="bg-eco-600 hover:bg-eco-700"
+                          >
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            Add Best
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  <div className="flex justify-between pt-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        onAddToCart?.(id);
+                        setShowAlternatives(false);
+                      }}
+                    >
+                      Add Original Anyway
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setShowAlternatives(false)}
+                    >
+                      Maybe Later
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
 
         {priceHistory.length > 0 && (
           <PriceTracker
