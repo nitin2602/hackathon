@@ -328,7 +328,130 @@ export function PriceTracker({
                 </Button>
               </div>
 
-              {isTracking && (
+              {/* Email Alerts Section */}
+              <div className="border-t pt-3">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="font-medium">Email Price Alerts</p>
+                    <p className="text-sm text-muted-foreground">
+                      Get price updates delivered to your inbox
+                    </p>
+                  </div>
+                  <Button
+                    variant={emailAlerts.enabled ? "default" : "outline"}
+                    size="sm"
+                    onClick={handleEmailAlert}
+                    disabled={emailSubmitted}
+                  >
+                    {emailSubmitted ? (
+                      <>
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Subscribed!
+                      </>
+                    ) : emailAlerts.enabled ? (
+                      <>
+                        <Mail className="h-3 w-3 mr-1" />
+                        Active
+                      </>
+                    ) : (
+                      <>
+                        <Mail className="h-3 w-3 mr-1" />
+                        Set Up
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {emailAlerts.enabled && !showEmailSetup && (
+                  <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm text-blue-600 font-medium">
+                        Email alerts active for {emailAlerts.email}
+                      </span>
+                    </div>
+                    <p className="text-xs text-blue-600 mt-1">
+                      Target price: ₹{emailAlerts.targetPrice || currentPrice} •{" "}
+                      {emailAlerts.frequency} updates
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Email Setup Dialog */}
+              {showEmailSetup && (
+                <Card className="bg-muted/50">
+                  <CardContent className="p-4 space-y-3">
+                    <h4 className="font-medium">Set Up Email Alerts</h4>
+                    <div className="space-y-2">
+                      <Label htmlFor="alert-email">Email Address</Label>
+                      <Input
+                        id="alert-email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={emailAlerts.email}
+                        onChange={(e) =>
+                          setEmailAlerts({
+                            ...emailAlerts,
+                            email: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="target-price">Target Price (₹)</Label>
+                      <Input
+                        id="target-price"
+                        type="number"
+                        placeholder={currentPrice.toString()}
+                        value={emailAlerts.targetPrice}
+                        onChange={(e) =>
+                          setEmailAlerts({
+                            ...emailAlerts,
+                            targetPrice: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="frequency">Alert Frequency</Label>
+                      <select
+                        id="frequency"
+                        className="w-full p-2 border rounded-md"
+                        value={emailAlerts.frequency}
+                        onChange={(e) =>
+                          setEmailAlerts({
+                            ...emailAlerts,
+                            frequency: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="instant">Instant</option>
+                        <option value="daily">Daily Summary</option>
+                        <option value="weekly">Weekly Summary</option>
+                      </select>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={handleEmailSetup}
+                        size="sm"
+                        className="flex-1"
+                      >
+                        Subscribe to Alerts
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowEmailSetup(false)}
+                        size="sm"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {isTracking && !showEmailSetup && (
                 <div className="bg-eco-50 border border-eco-200 p-3 rounded-lg">
                   <div className="flex items-center gap-2">
                     <Bell className="h-4 w-4 text-eco-600" />
@@ -341,7 +464,11 @@ export function PriceTracker({
               )}
 
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" size="sm">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowEmailSetup(true)}
+                >
                   <Calendar className="h-3 w-3 mr-1" />
                   Set Target Price
                 </Button>
