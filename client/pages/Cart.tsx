@@ -348,13 +348,15 @@ export default function Cart() {
 
                 {/* Checkout Buttons */}
                 <div className="space-y-3">
-                  <Button className="w-full" size="lg">
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    Proceed to Checkout
+                  <Button className="w-full" size="lg" asChild>
+                    <Link to="/checkout">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Proceed to Checkout
+                    </Link>
                   </Button>
                   <Button variant="outline" className="w-full">
                     <Gift className="h-4 w-4 mr-2" />
-                    Use EcoCredits (1245 available)
+                    Use EcoCredits ({user?.ecoCredits || 0} available)
                   </Button>
                 </div>
 
