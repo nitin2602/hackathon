@@ -5,7 +5,7 @@ import { Recycle } from "lucide-react";
 export default function RecyclePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar currentPath="/recycle" ecoCredits={1245} />
+      <Navbar currentPath="/recycle" />
 
       <main className="container mx-auto px-4 py-8">
         <div className="text-center">
