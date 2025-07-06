@@ -57,9 +57,12 @@ export function ProductCard({
   image,
   category,
   priceHistory = [],
+  layer1Alternative,
+  layer2Alternative,
   className,
   onAddToCart,
 }: ProductCardProps) {
+  const [showAlternatives, setShowAlternatives] = useState(false);
   // Convert numeric ecoScore to letter grade
   const getEcoScoreGrade = (score: string | number): string => {
     if (typeof score === "string") return score;
