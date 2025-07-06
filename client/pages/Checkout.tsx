@@ -98,6 +98,30 @@ export default function Checkout() {
     if (isDevelopment) {
       // Simulate payment processing
       setTimeout(() => {
+        // Add purchase activity
+        const itemNames = cartItems.map((item) => item.name).join(", ");
+        addActivity({
+          type: "purchase",
+          action: "Purchased",
+          item:
+            cartItems.length === 1
+              ? cartItems[0].name
+              : `${cartItems.length} items (${itemNames.substring(0, 30)}...)`,
+          co2Saved: totalCO2,
+          ecoCredits: ecoCreditsEarned,
+        });
+
+        // Add delivery offset activity if selected
+        if (deliveryOffset) {
+          addActivity({
+            type: "offset",
+            action: "Offset Delivery",
+            item: "Carbon-neutral delivery",
+            co2Saved: 0.5, // Estimated offset amount
+            ecoCredits: 5,
+          });
+        }
+
         // Update user stats
         updateUserStats({
           ecoCredits: ecoCreditsEarned,
