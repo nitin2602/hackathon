@@ -70,6 +70,15 @@ export default function Login() {
                 <p className="text-sm text-red-600">{error}</p>
               </div>
             )}
+
+            {/* Demo credentials */}
+            <div className="p-3 bg-eco-50 border border-eco-200 rounded-lg">
+              <p className="text-sm text-eco-700 font-medium mb-1">
+                Demo Account:
+              </p>
+              <p className="text-xs text-eco-600">Email: alex@example.com</p>
+              <p className="text-xs text-eco-600">Password: password</p>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
