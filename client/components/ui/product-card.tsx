@@ -24,7 +24,7 @@ export function ProductCard({
   id,
   name,
   price,
-  co2,
+  co2 = 0,
   ecoScore,
   isSustainable,
   image,
@@ -33,6 +33,17 @@ export function ProductCard({
   className,
   onAddToCart,
 }: ProductCardProps) {
+  // Convert numeric ecoScore to letter grade
+  const getEcoScoreGrade = (score: string | number): string => {
+    if (typeof score === "string") return score;
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 60) return "C";
+    if (score >= 40) return "D";
+    return "F";
+  };
+
+  const ecoGrade = getEcoScoreGrade(ecoScore);
   return (
     <Card
       className={cn(
@@ -100,7 +111,7 @@ export function ProductCard({
 
           <div className="flex items-center justify-between">
             <div className="text-2xl font-bold text-foreground">
-              ₹{price.toLocaleString()}
+              ��{price.toLocaleString()}
             </div>
             <div className="text-right">
               <div className="text-xs text-muted-foreground">Carbon Impact</div>
