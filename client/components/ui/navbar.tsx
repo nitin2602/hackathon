@@ -105,9 +105,11 @@ export function Navbar({
             </Button>
 
             {/* User Profile */}
-            <Button variant="ghost" size="sm">
-              <User className="h-4 w-4" />
-              <span className="sr-only">User menu</span>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/profile">
+                <User className="h-4 w-4" />
+                <span className="sr-only">User menu</span>
+              </Link>
             </Button>
 
             {/* Mobile Menu Button */}
