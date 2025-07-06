@@ -92,11 +92,7 @@ export default function Cart() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
-      <Navbar
-        currentPath="/cart"
-        ecoCredits={1245}
-        cartCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-      />
+      <Navbar currentPath="/cart" ecoCredits={1245} />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
