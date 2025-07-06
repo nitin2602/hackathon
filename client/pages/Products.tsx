@@ -13,6 +13,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Filter, Leaf, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 
 interface Product {
   id: string;
