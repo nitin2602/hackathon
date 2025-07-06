@@ -401,7 +401,10 @@ export default function Search() {
   };
 
   const handleAddToCart = (productId: string) => {
-    console.log("Adding product to cart:", productId);
+    const product = filteredProducts.find((p) => p.id === productId);
+    if (product) {
+      addToCart(product);
+    }
   };
 
   const getPriceChange = (product: Product) => {
