@@ -107,13 +107,30 @@ export function Navbar({ currentPath = "/", className }: NavbarProps) {
               </Link>
             </Button>
 
-            {/* User Profile */}
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/profile">
-                <User className="h-4 w-4" />
-                <span className="sr-only">User menu</span>
-              </Link>
-            </Button>
+            {/* User Profile / Auth */}
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/profile">
+                    <User className="h-4 w-4" />
+                    <span className="sr-only">User profile</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={logout}>
+                  <LogOut className="h-4 w-4" />
+                  <span className="sr-only">Logout</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button size="sm" asChild>
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+              </div>
+            )}
 
             {/* Mobile Menu Button */}
             <Button
