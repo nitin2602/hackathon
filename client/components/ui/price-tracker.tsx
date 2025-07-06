@@ -106,6 +106,29 @@ export function PriceTracker({
 
   const TrendIcon = getTrendIcon();
 
+  const handleEmailAlert = () => {
+    if (!emailAlerts.email) {
+      setShowEmailSetup(true);
+      return;
+    }
+
+    // Simulate API call to set up email alerts
+    setTimeout(() => {
+      setEmailAlerts({ ...emailAlerts, enabled: true });
+      setEmailSubmitted(true);
+      setTimeout(() => setEmailSubmitted(false), 3000);
+    }, 1000);
+  };
+
+  const handleEmailSetup = () => {
+    if (emailAlerts.email && emailAlerts.targetPrice) {
+      setEmailAlerts({ ...emailAlerts, enabled: true });
+      setShowEmailSetup(false);
+      setEmailSubmitted(true);
+      setTimeout(() => setEmailSubmitted(false), 3000);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
