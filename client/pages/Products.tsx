@@ -18,12 +18,14 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  co2: number;
-  ecoScore: string;
+  co2?: number;
+  ecoScore: number;
   isSustainable: boolean;
   image?: string;
   category: string;
   priceHistory?: { date: string; price: number }[];
+  layer1Alternative?: Product;
+  layer2Alternative?: Product;
 }
 
 const mockProducts: Product[] = [
