@@ -10,8 +10,8 @@ interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  co2: number;
-  ecoScore: string;
+  co2?: number;
+  ecoScore: string | number;
   isSustainable: boolean;
   image?: string;
   category: string;
