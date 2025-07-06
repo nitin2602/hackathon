@@ -13,6 +13,8 @@ import Products from "./pages/Products";
 import Search from "./pages/Search";
 import Rewards from "./pages/Rewards";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
 import Profile from "./pages/Profile";
 import RecyclePage from "./pages/Recycle";
 import Login from "./pages/Login";
