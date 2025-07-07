@@ -396,8 +396,158 @@ export default function RecyclePage() {
           )}
         </div>
 
+        {/* Sell Item Form */}
+        {showSellForm && activeTab === "marketplace" && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>List Item for Sale</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="sell-item-name">Item Name</Label>
+                  <Input
+                    id="sell-item-name"
+                    placeholder="e.g., iPhone 12, Winter Jacket"
+                    value={newSellItem.name}
+                    onChange={(e) =>
+                      setNewSellItem({ ...newSellItem, name: e.target.value })
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="sell-category">Category</Label>
+                  <select
+                    id="sell-category"
+                    className="w-full p-2 border rounded-md"
+                    value={newSellItem.category}
+                    onChange={(e) =>
+                      setNewSellItem({
+                        ...newSellItem,
+                        category: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Select category</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Home">Home & Garden</option>
+                    <option value="Books">Books</option>
+                    <option value="Sports">Sports & Fitness</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="sell-condition">Condition</Label>
+                  <select
+                    id="sell-condition"
+                    className="w-full p-2 border rounded-md"
+                    value={newSellItem.condition}
+                    onChange={(e) =>
+                      setNewSellItem({
+                        ...newSellItem,
+                        condition: e.target
+                          .value as MarketplaceItemData["condition"],
+                      })
+                    }
+                  >
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="fair">Fair</option>
+                    <option value="poor">Poor</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="original-price">Original Price (₹)</Label>
+                  <Input
+                    id="original-price"
+                    type="number"
+                    placeholder="1000"
+                    value={newSellItem.originalPrice}
+                    onChange={(e) =>
+                      setNewSellItem({
+                        ...newSellItem,
+                        originalPrice: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="sale-price">Sale Price (₹)</Label>
+                  <Input
+                    id="sale-price"
+                    type="number"
+                    placeholder="750"
+                    value={newSellItem.salePrice}
+                    onChange={(e) =>
+                      setNewSellItem({
+                        ...newSellItem,
+                        salePrice: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="sell-description">Description</Label>
+                <Textarea
+                  id="sell-description"
+                  placeholder="Describe the item's condition, features, and why you're selling it"
+                  value={newSellItem.description}
+                  onChange={(e) =>
+                    setNewSellItem({
+                      ...newSellItem,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              {newSellItem.originalPrice && newSellItem.salePrice && (
+                <div className="bg-eco-50 border border-eco-200 p-3 rounded-lg">
+                  <p className="text-sm text-eco-600">
+                    Discount:{" "}
+                    <span className="font-bold">
+                      {Math.round(
+                        ((Number(newSellItem.originalPrice) -
+                          Number(newSellItem.salePrice)) /
+                          Number(newSellItem.originalPrice)) *
+                          100,
+                      )}
+                      % off
+                    </span>
+                    {" • "}
+                    <span className="text-eco-800">
+                      Eco-friendly second-hand purchase!
+                    </span>
+                  </p>
+                </div>
+              )}
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleSellItem}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  List Item
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowSellForm(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Add Item Form */}
-        {showAddForm && (
+        {showAddForm && activeTab === "recycle" && (
           <Card className="mb-8">
             <CardHeader>
               <CardTitle>Add New Item for Recycling</CardTitle>
