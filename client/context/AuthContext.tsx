@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { userAPI, type UserData } from "../services/api";
 
 interface User {
   id: string;
