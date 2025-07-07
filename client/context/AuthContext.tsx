@@ -248,27 +248,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }) => {
     if (!user) return;
 
-    const updatedUser: User = {
-      ...user,
-      ecoCredits: user.ecoCredits + purchase.ecoCredits,
-      co2SavedTotal: user.co2SavedTotal + purchase.co2Saved,
-      co2SavedThisMonth: user.co2SavedThisMonth + purchase.co2Saved,
-      purchasesCount: user.purchasesCount + 1,
-    };
+    try {
+      // Update user stats in MongoDB
+      await userAPI.updateUserStats(user.email, {
+        ecoCredits: purchase.ecoCredits,
+        co2SavedTotal: purchase.co2Saved,
+        co2SavedThisMonth: purchase.co2Saved,
+        purchasesCount: 1,
+      });
 
-    // Update level based on new EcoCredits
-    const levelInfo = calculateLevel(updatedUser.ecoCredits);
-    updatedUser.currentLevel = levelInfo.currentLevel;
-    updatedUser.nextLevel = levelInfo.nextLevel;
-    updatedUser.progressToNext = levelInfo.progressToNext;
+      // Update local state
+      const updatedUser: User = {
+        ...user,
+        ecoCredits: user.ecoCredits + purchase.ecoCredits,
+        co2SavedTotal: user.co2SavedTotal + purchase.co2Saved,
+        co2SavedThisMonth: user.co2SavedThisMonth + purchase.co2Saved,
+        purchasesCount: user.purchasesCount + 1,
+      };
 
-    // Update badges
-    updatedUser.badgesEarned = getBadges(updatedUser);
+      // Update level based on new EcoCredits
+      const levelInfo = calculateLevel(updatedUser.ecoCredits);
+      updatedUser.currentLevel = levelInfo.currentLevel;
+      updatedUser.nextLevel = levelInfo.nextLevel;
+      updatedUser.progressToNext = levelInfo.progressToNext;
 
-    // Update mock data and localStorage
-    mockUsers[user.email] = updatedUser;
-    setUser(updatedUser);
-    localStorage.setItem("ecocreds_user", JSON.stringify(updatedUser));
+      // Update badges
+      updatedUser.badgesEarned = getBadges(updatedUser);
+
+      setUser(updatedUser);
+    } catch (error) {
+      console.error("Error updating user stats:", error);
+    }
   };
 
   const value: AuthContextType = {
