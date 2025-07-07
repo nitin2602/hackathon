@@ -39,26 +39,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock user data - in a real app this would come from a database
-const mockUsers: Record<string, User> = {
-  "alex@example.com": {
-    id: "alex_1",
-    name: "Alex Johnson",
-    email: "alex@example.com",
-    ecoCredits: 1245,
-    co2SavedTotal: 156.8,
-    co2SavedThisMonth: 12.4,
-    purchasesCount: 42,
-    recycledItems: 18,
-    treesPlanted: 3,
-    badgesEarned: ["EcoShopper", "Offset Champion", "Tree Planter"],
-    memberSince: "January 2024",
-    currentLevel: "Eco Champion",
-    nextLevel: "Planet Protector",
-    progressToNext: 75,
-  },
-};
-
 const createNewUser = (name: string, email: string): User => ({
   id: `user_${Date.now()}`,
   name,
@@ -78,6 +58,30 @@ const createNewUser = (name: string, email: string): User => ({
   nextLevel: "Green Shopper",
   progressToNext: 0,
 });
+
+// Convert MongoDB user data to frontend User interface
+const convertUserData = (userData: UserData): User => {
+  const levelInfo = calculateLevel(userData.ecoCredits);
+  return {
+    id: userData.email, // Using email as id for simplicity
+    name: userData.name,
+    email: userData.email,
+    ecoCredits: userData.ecoCredits,
+    co2SavedTotal: userData.co2SavedTotal,
+    co2SavedThisMonth: userData.co2SavedThisMonth,
+    purchasesCount: userData.purchasesCount,
+    recycledItems: 0, // Not tracked in MongoDB yet
+    treesPlanted: Math.floor(userData.co2SavedTotal / 50), // Estimate based on CO2 saved
+    badgesEarned: userData.badgesEarned,
+    memberSince: new Date().toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    }),
+    currentLevel: levelInfo.currentLevel,
+    nextLevel: levelInfo.nextLevel,
+    progressToNext: levelInfo.progressToNext,
+  };
+};
 
 const calculateLevel = (
   ecoCredits: number,
