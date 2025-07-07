@@ -37,21 +37,42 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
   // Load activities from MongoDB when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user?.email) {
-      userAPI.getUserActivities(user.email, 50).then((mongoActivities) => {
-        const convertedActivities: Activity[] = mongoActivities.map(
-          (activity) => ({
-            id: activity.timestamp.toString(),
-            type: activity.type,
-            action: activity.action,
-            item: activity.item,
-            co2Saved: activity.co2Saved,
-            ecoCredits: activity.ecoCredits,
-            date: new Date(activity.timestamp).toISOString(),
-            timestamp: activity.timestamp,
-          }),
-        );
-        setActivities(convertedActivities);
-      });
+      userAPI
+        .getUserActivities(user.email, 50)
+        .then((mongoActivities) => {
+          const convertedActivities: Activity[] = mongoActivities.map(
+            (activity) => ({
+              id: activity.timestamp.toString(),
+              type: activity.type,
+              action: activity.action,
+              item: activity.item,
+              co2Saved: activity.co2Saved,
+              ecoCredits: activity.ecoCredits,
+              date: new Date(activity.timestamp).toISOString(),
+              timestamp: activity.timestamp,
+            }),
+          );
+          setActivities(convertedActivities);
+          // Cache activities for offline access
+          localStorage.setItem(
+            "ecocreds_activities",
+            JSON.stringify(convertedActivities),
+          );
+        })
+        .catch((error) => {
+          console.warn("API unavailable, using cached activities:", error);
+          // Fallback to localStorage
+          const saved = localStorage.getItem("ecocreds_activities");
+          if (saved) {
+            try {
+              const cachedActivities = JSON.parse(saved);
+              setActivities(cachedActivities);
+            } catch (e) {
+              console.error("Failed to parse cached activities:", e);
+              setActivities([]);
+            }
+          }
+        });
     } else {
       setActivities([]);
     }
