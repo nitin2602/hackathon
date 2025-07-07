@@ -137,28 +137,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load user from localStorage on app start
   useEffect(() => {
-    const savedUser = localStorage.getItem("ecocreds_user");
-    if (savedUser) {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
-      setIsAuthenticated(true);
+    const savedUserEmail = localStorage.getItem("ecocreds_user_email");
+    if (savedUserEmail) {
+      // Load user data from MongoDB
+      userAPI.getUser(savedUserEmail).then((userData) => {
+        if (userData) {
+          const convertedUser = convertUserData(userData);
+          setUser(convertedUser);
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem("ecocreds_user_email");
+        }
+      });
     }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Check if user exists in MongoDB
+      const userData = await userAPI.getUser(email);
 
-    // Check if user exists
-    if (mockUsers[email]) {
-      const userData = mockUsers[email];
-      setUser(userData);
-      setIsAuthenticated(true);
-      localStorage.setItem("ecocreds_user", JSON.stringify(userData));
-      return true;
+      if (userData && userData.password === password) {
+        const convertedUser = convertUserData(userData);
+        setUser(convertedUser);
+        setIsAuthenticated(true);
+        localStorage.setItem("ecocreds_user_email", email);
+        return true;
+      }
+
+      // Demo user fallback for alex@example.com
+      if (email === "alex@example.com" && password === "password") {
+        const demoUser: UserData = {
+          email: "alex@example.com",
+          password: "password",
+          name: "Alex Johnson",
+          ecoCredits: 1245,
+          co2SavedThisMonth: 12.4,
+          co2SavedTotal: 156.8,
+          purchasesCount: 42,
+          level: "Eco Champion",
+          progressToNext: 75,
+          badgesEarned: ["EcoShopper", "Offset Champion", "Tree Planter"],
+        };
+
+        // Save demo user to MongoDB
+        await userAPI.saveUser(demoUser);
+        const convertedUser = convertUserData(demoUser);
+        setUser(convertedUser);
+        setIsAuthenticated(true);
+        localStorage.setItem("ecocreds_user_email", email);
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
     }
-
-    return false;
   };
 
   const signup = async (
@@ -166,31 +201,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
   ): Promise<boolean> => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Check if user already exists
+      const existingUser = await userAPI.getUser(email);
+      if (existingUser) {
+        return false; // User already exists
+      }
 
-    // Check if user already exists
-    if (mockUsers[email]) {
-      return false; // User already exists
+      // Create new user in MongoDB
+      const newUserData: UserData = {
+        email,
+        password,
+        name,
+        ecoCredits: 0,
+        co2SavedThisMonth: 0,
+        co2SavedTotal: 0,
+        purchasesCount: 0,
+        level: "Eco Starter",
+        progressToNext: 0,
+        badgesEarned: [],
+      };
+
+      await userAPI.saveUser(newUserData);
+      const convertedUser = convertUserData(newUserData);
+
+      setUser(convertedUser);
+      setIsAuthenticated(true);
+      localStorage.setItem("ecocreds_user_email", email);
+      return true;
+    } catch (error) {
+      console.error("Signup error:", error);
+      return false;
     }
-
-    // Create new user with 0 stats
-    const newUser = createNewUser(name, email);
-    mockUsers[email] = newUser;
-
-    setUser(newUser);
-    setIsAuthenticated(true);
-    localStorage.setItem("ecocreds_user", JSON.stringify(newUser));
-    return true;
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem("ecocreds_user");
+    localStorage.removeItem("ecocreds_user_email");
   };
 
-  const updateUserStats = (purchase: {
+  const updateUserStats = async (purchase: {
     ecoCredits: number;
     co2Saved: number;
     price: number;
