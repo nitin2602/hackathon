@@ -739,27 +739,27 @@ export default function RecyclePage() {
           )}
         </div>
 
-        {/* Empty State */}
-        {recycleItems.length === 0 && (
-          <Card className="text-center p-12">
-            <Recycle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">
-              Start Recycling Today!
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Add items you want to recycle and earn EcoCredits while helping
-              the environment.
-            </p>
-            <Button
-              onClick={() => setShowAddForm(true)}
-              className="bg-eco-500 hover:bg-eco-600"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Your First Item
-            </Button>
-          </Card>
-        )}
-        </div>
+          {/* Empty State */}
+          {recycleItems.length === 0 && (
+            <Card className="text-center p-12">
+              <Recycle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">
+                Start Recycling Today!
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Add items you want to recycle and earn EcoCredits while helping
+                the environment.
+              </p>
+              <Button
+                onClick={() => setShowAddForm(true)}
+                className="bg-eco-500 hover:bg-eco-600"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Your First Item
+              </Button>
+            </Card>
+          )}
+          </div>
         ) : (
           /* Marketplace Items */
           <div className="space-y-6">
