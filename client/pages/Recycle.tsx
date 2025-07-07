@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
 import { useActivity } from "@/context/ActivityContext";
+import { marketplaceAPI, type MarketplaceItemData } from "@/services/api";
 import {
   Recycle,
   Plus,
@@ -17,8 +18,12 @@ import {
   CheckCircle,
   ArrowRight,
   Trash2,
+  ShoppingCart,
+  Eye,
+  Tag,
+  Store,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 interface RecycleItem {
@@ -71,6 +76,32 @@ export default function RecyclePage() {
     condition: "good" as RecycleItem["condition"],
     description: "",
   });
+
+  // Marketplace state
+  const [activeTab, setActiveTab] = useState<"recycle" | "marketplace">(
+    "recycle",
+  );
+  const [marketplaceItems, setMarketplaceItems] = useState<
+    MarketplaceItemData[]
+  >([]);
+  const [showSellForm, setShowSellForm] = useState(false);
+  const [newSellItem, setNewSellItem] = useState({
+    name: "",
+    category: "",
+    condition: "good" as MarketplaceItemData["condition"],
+    description: "",
+    originalPrice: "",
+    salePrice: "",
+  });
+
+  // Load marketplace items
+  useEffect(() => {
+    const loadMarketplaceItems = async () => {
+      const items = await marketplaceAPI.getItems({ limit: 20 });
+      setMarketplaceItems(items);
+    };
+    loadMarketplaceItems();
+  }, []);
 
   // Redirect if not authenticated
   if (!isAuthenticated || !user) {
