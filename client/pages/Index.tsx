@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/ui/navbar";
+import { OfflineBanner } from "@/components/ui/offline-banner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -78,7 +79,7 @@ export default function Index() {
         badge === "EcoShopper"
           ? "🌿"
           : badge === "Offset Champion"
-            ? "��"
+            ? "🚴"
             : badge === "Tree Planter"
               ? "🌳"
               : badge === "Recycler"
@@ -126,6 +127,7 @@ export default function Index() {
       <Navbar currentPath="/" />
 
       <main className="container mx-auto px-4 py-8">
+        <OfflineBanner />
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
