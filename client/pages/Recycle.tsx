@@ -207,6 +207,57 @@ export default function RecyclePage() {
     });
   };
 
+  const handleSellItem = async () => {
+    if (
+      !newSellItem.name ||
+      !newSellItem.category ||
+      !newSellItem.originalPrice ||
+      !newSellItem.salePrice ||
+      !user
+    )
+      return;
+
+    try {
+      const itemData: MarketplaceItemData = {
+        name: newSellItem.name,
+        category: newSellItem.category,
+        condition: newSellItem.condition,
+        description: newSellItem.description,
+        originalPrice: Number(newSellItem.originalPrice),
+        salePrice: Number(newSellItem.salePrice),
+        sellerName: user.name,
+        sellerEmail: user.email,
+      };
+
+      await marketplaceAPI.createItem(itemData);
+
+      // Refresh marketplace items
+      const updatedItems = await marketplaceAPI.getItems({ limit: 20 });
+      setMarketplaceItems(updatedItems);
+
+      // Reset form
+      setNewSellItem({
+        name: "",
+        category: "",
+        condition: "good",
+        description: "",
+        originalPrice: "",
+        salePrice: "",
+      });
+      setShowSellForm(false);
+
+      // Add activity
+      addActivity({
+        type: "purchase", // Using purchase type for marketplace activity
+        action: "Listed for Sale",
+        item: newSellItem.name,
+        ecoCredits: 5, // Small reward for listing items
+      });
+    } catch (error) {
+      console.error("Error listing item:", error);
+    }
+  };
+
   const getStatusColor = (status: RecycleItem["status"]) => {
     switch (status) {
       case "pending":
