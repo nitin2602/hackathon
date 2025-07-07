@@ -97,8 +97,28 @@ export default function RecyclePage() {
   // Load marketplace items
   useEffect(() => {
     const loadMarketplaceItems = async () => {
-      const items = await marketplaceAPI.getItems({ limit: 20 });
-      setMarketplaceItems(items);
+      try {
+        const items = await marketplaceAPI.getItems({ limit: 20 });
+        setMarketplaceItems(items);
+        // Cache for offline access
+        localStorage.setItem(
+          "ecocreds_marketplace_items",
+          JSON.stringify(items),
+        );
+      } catch (error) {
+        console.warn("API unavailable, using cached marketplace items:", error);
+        // Fallback to localStorage
+        const cached = localStorage.getItem("ecocreds_marketplace_items");
+        if (cached) {
+          try {
+            const cachedItems = JSON.parse(cached);
+            setMarketplaceItems(cachedItems);
+          } catch (e) {
+            console.error("Failed to parse cached marketplace items:", e);
+            setMarketplaceItems([]);
+          }
+        }
+      }
     };
     loadMarketplaceItems();
   }, []);
@@ -229,11 +249,39 @@ export default function RecyclePage() {
         sellerEmail: user.email,
       };
 
-      await marketplaceAPI.createItem(itemData);
+      try {
+        await marketplaceAPI.createItem(itemData);
+        // Refresh marketplace items
+        const updatedItems = await marketplaceAPI.getItems({ limit: 20 });
+        setMarketplaceItems(updatedItems);
+        localStorage.setItem(
+          "ecocreds_marketplace_items",
+          JSON.stringify(updatedItems),
+        );
+      } catch (apiError) {
+        console.warn("API unavailable, adding item locally:", apiError);
+        // Fallback: add item locally
+        const localItem: MarketplaceItemData = {
+          ...itemData,
+          _id: `local_${Date.now()}`,
+          discountPercentage: Math.round(
+            ((itemData.originalPrice - itemData.salePrice) /
+              itemData.originalPrice) *
+              100,
+          ),
+          ecoScore: 85,
+          views: 0,
+          status: "available",
+          createdAt: new Date().toISOString(),
+        };
 
-      // Refresh marketplace items
-      const updatedItems = await marketplaceAPI.getItems({ limit: 20 });
-      setMarketplaceItems(updatedItems);
+        const updatedItems = [localItem, ...marketplaceItems];
+        setMarketplaceItems(updatedItems);
+        localStorage.setItem(
+          "ecocreds_marketplace_items",
+          JSON.stringify(updatedItems),
+        );
+      }
 
       // Reset form
       setNewSellItem({
