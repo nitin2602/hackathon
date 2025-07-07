@@ -31,8 +31,6 @@ export function Navbar({ currentPath = "/", className }: NavbarProps) {
   const navItems = [
     { href: "/", label: "Home", icon: BarChart3 },
     { href: "/products", label: "Products", icon: ShoppingCart },
-    { href: "/search", label: "Search", icon: Search },
-    { href: "/marketplace", label: "Marketplace", icon: User },
     { href: "/rewards", label: "Rewards", icon: Gift },
   ];
 
