@@ -190,10 +190,15 @@ export const marketplaceAPI = {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch marketplace items");
+        const errorText = await response.text();
+        console.error("API Error:", response.status, errorText);
+        throw new Error(
+          `Failed to fetch marketplace items: ${response.status}`,
+        );
       }
 
-      return await response.json();
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error("Error fetching marketplace items:", error);
       return [];
