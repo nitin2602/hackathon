@@ -1,5 +1,18 @@
 const API_BASE_URL = "/api";
 
+// Check if API is available
+const isAPIAvailable = async (): Promise<boolean> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/ping`, {
+      signal: AbortSignal.timeout(5000), // 5 second timeout
+    });
+    return response.ok;
+  } catch (error) {
+    console.warn("API health check failed:", error);
+    return false;
+  }
+};
+
 export interface UserData {
   email: string;
   password: string;
