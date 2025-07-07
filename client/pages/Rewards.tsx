@@ -15,6 +15,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useActivity } from "@/context/ActivityContext";
 
 interface Reward {
   id: string;
@@ -148,17 +150,79 @@ const mockRedemptionHistory: RedemptionHistory[] = [
 ];
 
 export default function Rewards() {
-  const [currentEcoCredits] = useState(1245);
+  const { user, isAuthenticated } = useAuth();
+  const { addActivity } = useActivity();
   const [showHistory, setShowHistory] = useState(false);
+  const [redeemedRewards, setRedeemedRewards] = useState<string[]>([]);
+
+  const currentEcoCredits = user?.ecoCredits || 0;
 
   const handleRedeem = (reward: Reward) => {
-    if (currentEcoCredits >= reward.ecoCreditsRequired) {
-      console.log("Redeeming reward:", reward.name);
-      // In a real app, this would call an API and update state
+    if (currentEcoCredits >= reward.ecoCreditsRequired && user) {
+      // Store redeemed cart credits in localStorage for cart to use
+      if (reward.type === "cart_credit") {
+        const cartCredits = JSON.parse(
+          localStorage.getItem("ecocreds_cart_credits") || "[]",
+        );
+        const newCredit = {
+          id: `credit_${Date.now()}`,
+          name: reward.name,
+          value: reward.creditValue,
+          minOrderValue: reward.minOrderValue,
+          redeemed: new Date().toISOString(),
+          used: false,
+        };
+        cartCredits.push(newCredit);
+        localStorage.setItem(
+          "ecocreds_cart_credits",
+          JSON.stringify(cartCredits),
+        );
+      }
+
+      // Add to redeemed list
+      setRedeemedRewards([...redeemedRewards, reward.id]);
+
+      // Add activity
+      addActivity({
+        type: "reward",
+        action: "Redeemed",
+        item: reward.name,
+        ecoCredits: -reward.ecoCreditsRequired, // Negative because it's spent
+      });
+
+      // Show success message
+      alert(
+        reward.type === "cart_credit"
+          ? `✅ Cart credits redeemed! ₹${reward.creditValue} has been added to your available credits. Use them at checkout.`
+          : `✅ ${reward.name} redeemed successfully!`,
+      );
     }
   };
 
   const canAfford = (required: number) => currentEcoCredits >= required;
+  const isRedeemed = (rewardId: string) => redeemedRewards.includes(rewardId);
+
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
+        <Navbar currentPath="/rewards" />
+        <main className="container mx-auto px-4 py-8 text-center">
+          <Card className="max-w-md mx-auto">
+            <CardContent className="p-12">
+              <Gift className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+              <h2 className="text-xl font-semibold mb-2">Login Required</h2>
+              <p className="text-muted-foreground mb-4">
+                Please log in to view and redeem your EcoCredits rewards.
+              </p>
+              <Button asChild>
+                <a href="/login">Sign In</a>
+              </Button>
+            </CardContent>
+          </Card>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-earth-50">
@@ -378,17 +442,25 @@ export default function Rewards() {
 
                   <Button
                     onClick={() => handleRedeem(reward)}
-                    disabled={!affordable || !reward.available}
+                    disabled={
+                      !affordable || !reward.available || isRedeemed(reward.id)
+                    }
                     className="w-full"
                     variant={
-                      affordable && reward.available ? "default" : "outline"
+                      isRedeemed(reward.id)
+                        ? "secondary"
+                        : affordable && reward.available
+                          ? "default"
+                          : "outline"
                     }
                   >
-                    {!reward.available
-                      ? reward.timeLeft || "Unavailable"
-                      : !affordable
-                        ? `Need ${reward.ecoCreditsRequired - currentEcoCredits} more`
-                        : "Redeem Now"}
+                    {isRedeemed(reward.id)
+                      ? "✅ Redeemed"
+                      : !reward.available
+                        ? reward.timeLeft || "Unavailable"
+                        : !affordable
+                          ? `Need ${reward.ecoCreditsRequired - currentEcoCredits} more`
+                          : "Redeem Now"}
                   </Button>
                 </CardContent>
               </Card>
