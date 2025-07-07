@@ -21,11 +21,13 @@ interface Reward {
   name: string;
   description: string;
   ecoCreditsRequired: number;
-  type: "coupon" | "environmental" | "delivery";
+  type: "coupon" | "environmental" | "delivery" | "cart_credit";
   icon: React.ElementType;
   available: boolean;
   timeLeft?: string;
   popular?: boolean;
+  minOrderValue?: number;
+  creditValue?: number;
 }
 
 const mockRewards: Reward[] = [
@@ -41,25 +43,49 @@ const mockRewards: Reward[] = [
   },
   {
     id: "2",
+    name: "₹20 Cart Credits",
+    description: "Apply ₹20 off on orders above ₹500",
+    ecoCreditsRequired: 50,
+    type: "cart_credit",
+    icon: Coins,
+    available: true,
+    popular: true,
+    minOrderValue: 500,
+    creditValue: 20,
+  },
+  {
+    id: "3",
+    name: "₹50 Cart Credits",
+    description: "Apply ₹50 off on orders above ₹1000",
+    ecoCreditsRequired: 120,
+    type: "cart_credit",
+    icon: Coins,
+    available: true,
+    minOrderValue: 1000,
+    creditValue: 50,
+  },
+  {
+    id: "4",
+    name: "₹100 Cart Credits",
+    description: "Apply ₹100 off on orders above ₹2000",
+    ecoCreditsRequired: 250,
+    type: "cart_credit",
+    icon: Coins,
+    available: true,
+    minOrderValue: 2000,
+    creditValue: 100,
+  },
+  {
+    id: "5",
     name: "Plant a Tree",
     description: "We'll plant a tree in your name through our partner NGO",
     ecoCreditsRequired: 80,
     type: "environmental",
     icon: TreePine,
     available: true,
-    popular: true,
   },
   {
-    id: "3",
-    name: "₹100 Walmart Coupon",
-    description: "Use on your next purchase of ₹1000 or more",
-    ecoCreditsRequired: 200,
-    type: "coupon",
-    icon: ShoppingBag,
-    available: true,
-  },
-  {
-    id: "4",
+    id: "6",
     name: "Free Express Delivery",
     description: "Get free express delivery on your next 3 orders",
     ecoCreditsRequired: 150,
@@ -68,7 +94,7 @@ const mockRewards: Reward[] = [
     available: true,
   },
   {
-    id: "5",
+    id: "7",
     name: "Ocean Cleanup Donation",
     description: "Support ocean cleanup efforts with ₹100 donation",
     ecoCreditsRequired: 120,
@@ -77,14 +103,15 @@ const mockRewards: Reward[] = [
     available: true,
   },
   {
-    id: "6",
-    name: "₹250 Walmart Coupon",
-    description: "Premium reward for dedicated eco-shoppers",
+    id: "8",
+    name: "₹250 Premium Credits",
+    description: "Premium cart credits for dedicated eco-shoppers",
     ecoCreditsRequired: 500,
-    type: "coupon",
+    type: "cart_credit",
     icon: Gift,
-    available: false,
-    timeLeft: "Coming soon",
+    available: true,
+    minOrderValue: 3000,
+    creditValue: 250,
   },
 ];
 
@@ -242,6 +269,10 @@ export default function Rewards() {
               All Rewards
             </Badge>
             <Badge variant="outline">
+              <Coins className="h-3 w-3 mr-1" />
+              Cart Credits
+            </Badge>
+            <Badge variant="outline">
               <ShoppingBag className="h-3 w-3 mr-1" />
               Coupons
             </Badge>
@@ -285,7 +316,9 @@ export default function Rewards() {
                           ? "bg-eco-100 text-eco-600"
                           : reward.type === "coupon"
                             ? "bg-blue-100 text-blue-600"
-                            : "bg-orange-100 text-orange-600"
+                            : reward.type === "cart_credit"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-orange-100 text-orange-600"
                       }`}
                     >
                       <Icon className="h-6 w-6" />
@@ -303,9 +336,24 @@ export default function Rewards() {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">
-                    {reward.description}
-                  </p>
+                  <div>
+                    <p className="text-sm text-muted-foreground">
+                      {reward.description}
+                    </p>
+                    {reward.type === "cart_credit" &&
+                      reward.minOrderValue &&
+                      reward.creditValue && (
+                        <div className="mt-2 p-2 bg-purple-50 rounded-lg border border-purple-200">
+                          <p className="text-xs text-purple-700 font-medium">
+                            💰 Get ₹{reward.creditValue} off • Min order: ₹
+                            {reward.minOrderValue}
+                          </p>
+                          <p className="text-xs text-purple-600">
+                            Credits will be applied to your cart automatically
+                          </p>
+                        </div>
+                      )}
+                  </div>
 
                   {/* Progress bar for affordability */}
                   <div className="space-y-2">
