@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { userAPI, type ActivityData } from "../services/api";
+import { useAuth } from "./AuthContext";
 
 interface Activity {
   id: string;
@@ -23,15 +31,37 @@ const ActivityContext = createContext<ActivityContextType | undefined>(
 );
 
 export function ActivityProvider({ children }: { children: ReactNode }) {
-  const [activities, setActivities] = useState<Activity[]>(() => {
-    // Load from localStorage on initialization
-    const saved = localStorage.getItem("ecocreds_activities");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const { user, isAuthenticated } = useAuth();
 
-  const addActivity = (
+  // Load activities from MongoDB when user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && user?.email) {
+      userAPI.getUserActivities(user.email, 50).then((mongoActivities) => {
+        const convertedActivities: Activity[] = mongoActivities.map(
+          (activity) => ({
+            id: activity.timestamp.toString(),
+            type: activity.type,
+            action: activity.action,
+            item: activity.item,
+            co2Saved: activity.co2Saved,
+            ecoCredits: activity.ecoCredits,
+            date: new Date(activity.timestamp).toISOString(),
+            timestamp: activity.timestamp,
+          }),
+        );
+        setActivities(convertedActivities);
+      });
+    } else {
+      setActivities([]);
+    }
+  }, [isAuthenticated, user?.email]);
+
+  const addActivity = async (
     activityData: Omit<Activity, "id" | "date" | "timestamp">,
   ) => {
+    if (!user?.email) return;
+
     const newActivity: Activity = {
       ...activityData,
       id: `activity_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -39,12 +69,34 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
       timestamp: Date.now(),
     };
 
-    const updatedActivities = [newActivity, ...activities].slice(0, 50); // Keep only last 50 activities
-    setActivities(updatedActivities);
-    localStorage.setItem(
-      "ecocreds_activities",
-      JSON.stringify(updatedActivities),
-    );
+    // Add to MongoDB
+    try {
+      const mongoActivity: ActivityData = {
+        action: activityData.action,
+        item: activityData.item,
+        co2Saved: activityData.co2Saved,
+        ecoCredits: activityData.ecoCredits,
+        timestamp: Date.now(),
+        type: activityData.type,
+      };
+
+      await userAPI.addActivity(user.email, mongoActivity);
+
+      // Update local state
+      const updatedActivities = [newActivity, ...activities].slice(0, 50);
+      setActivities(updatedActivities);
+    } catch (error) {
+      console.error("Error adding activity:", error);
+      // Fallback to localStorage for offline support
+      const saved = localStorage.getItem("ecocreds_activities");
+      const localActivities = saved ? JSON.parse(saved) : [];
+      const updatedActivities = [newActivity, ...localActivities].slice(0, 50);
+      setActivities(updatedActivities);
+      localStorage.setItem(
+        "ecocreds_activities",
+        JSON.stringify(updatedActivities),
+      );
+    }
   };
 
   const getRecentActivities = (limit = 10) => {
