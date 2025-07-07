@@ -148,7 +148,7 @@ export function ProductCard({
               <div className="text-xs text-muted-foreground">Carbon Impact</div>
               <div className="flex items-center gap-1 text-sm font-medium text-carbon">
                 <TrendingDown className="h-3 w-3" />
-                {co2}kg CO₂
+                {co2.toFixed(2)}kg CO₂
               </div>
             </div>
           </div>
