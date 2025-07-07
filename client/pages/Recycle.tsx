@@ -78,12 +78,8 @@ export default function RecyclePage() {
   });
 
   // Marketplace state
-  const [activeTab, setActiveTab] = useState<"recycle" | "marketplace">(
-    "recycle",
-  );
-  const [marketplaceItems, setMarketplaceItems] = useState<
-    MarketplaceItemData[]
-  >([]);
+  const [activeTab, setActiveTab] = useState<"recycle" | "marketplace">("recycle");
+  const [marketplaceItems, setMarketplaceItems] = useState<MarketplaceItemData[]>([]);
   const [showSellForm, setShowSellForm] = useState(false);
   const [newSellItem, setNewSellItem] = useState({
     name: "",
@@ -208,14 +204,7 @@ export default function RecyclePage() {
   };
 
   const handleSellItem = async () => {
-    if (
-      !newSellItem.name ||
-      !newSellItem.category ||
-      !newSellItem.originalPrice ||
-      !newSellItem.salePrice ||
-      !user
-    )
-      return;
+    if (!newSellItem.name || !newSellItem.category || !newSellItem.originalPrice || !newSellItem.salePrice || !user) return;
 
     try {
       const itemData: MarketplaceItemData = {
@@ -318,7 +307,8 @@ export default function RecyclePage() {
           <p className="text-muted-foreground">
             {activeTab === "recycle"
               ? "Turn your unwanted items into EcoCredits and help the environment"
-              : "Buy and sell eco-friendly second-hand items at great prices"}
+              : "Buy and sell eco-friendly second-hand items at great prices"
+            }
           </p>
         </div>
 
@@ -422,10 +412,7 @@ export default function RecyclePage() {
                     className="w-full p-2 border rounded-md"
                     value={newSellItem.category}
                     onChange={(e) =>
-                      setNewSellItem({
-                        ...newSellItem,
-                        category: e.target.value,
-                      })
+                      setNewSellItem({ ...newSellItem, category: e.target.value })
                     }
                   >
                     <option value="">Select category</option>
@@ -449,8 +436,7 @@ export default function RecyclePage() {
                     onChange={(e) =>
                       setNewSellItem({
                         ...newSellItem,
-                        condition: e.target
-                          .value as MarketplaceItemData["condition"],
+                        condition: e.target.value as MarketplaceItemData["condition"],
                       })
                     }
                   >
@@ -468,10 +454,7 @@ export default function RecyclePage() {
                     placeholder="1000"
                     value={newSellItem.originalPrice}
                     onChange={(e) =>
-                      setNewSellItem({
-                        ...newSellItem,
-                        originalPrice: e.target.value,
-                      })
+                      setNewSellItem({ ...newSellItem, originalPrice: e.target.value })
                     }
                   />
                 </div>
@@ -483,10 +466,7 @@ export default function RecyclePage() {
                     placeholder="750"
                     value={newSellItem.salePrice}
                     onChange={(e) =>
-                      setNewSellItem({
-                        ...newSellItem,
-                        salePrice: e.target.value,
-                      })
+                      setNewSellItem({ ...newSellItem, salePrice: e.target.value })
                     }
                   />
                 </div>
@@ -499,10 +479,7 @@ export default function RecyclePage() {
                   placeholder="Describe the item's condition, features, and why you're selling it"
                   value={newSellItem.description}
                   onChange={(e) =>
-                    setNewSellItem({
-                      ...newSellItem,
-                      description: e.target.value,
-                    })
+                    setNewSellItem({ ...newSellItem, description: e.target.value })
                   }
                 />
               </div>
@@ -513,8 +490,7 @@ export default function RecyclePage() {
                     Discount:{" "}
                     <span className="font-bold">
                       {Math.round(
-                        ((Number(newSellItem.originalPrice) -
-                          Number(newSellItem.salePrice)) /
+                        ((Number(newSellItem.originalPrice) - Number(newSellItem.salePrice)) /
                           Number(newSellItem.originalPrice)) *
                           100,
                       )}
@@ -535,10 +511,7 @@ export default function RecyclePage() {
                 >
                   List Item
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowSellForm(false)}
-                >
+                <Button variant="outline" onClick={() => setShowSellForm(false)}>
                   Cancel
                 </Button>
               </div>
@@ -644,8 +617,10 @@ export default function RecyclePage() {
           </Card>
         )}
 
-        {/* Items Lists */}
-        <div className="space-y-8">
+        {/* Main Content */}
+        {activeTab === "recycle" ? (
+          /* Recycle Items Lists */
+          <div className="space-y-8">
           {/* Approved Items - Ready to Recycle */}
           {approvedItems.length > 0 && (
             <div>
@@ -783,6 +758,95 @@ export default function RecyclePage() {
               Add Your First Item
             </Button>
           </Card>
+        )}
+        </div>
+        ) : (
+          /* Marketplace Items */
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Available Items</h2>
+              <p className="text-sm text-muted-foreground">
+                {marketplaceItems.length} items available
+              </p>
+            </div>
+
+            {marketplaceItems.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {marketplaceItems.map((item) => (
+                  <Card key={item._id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="font-semibold text-lg">{item.name}</h3>
+                        <Badge variant="secondary">{item.condition}</Badge>
+                      </div>
+
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                        {item.description}
+                      </p>
+
+                      <div className="space-y-2 mb-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-bold text-primary">
+                            ₹{item.salePrice.toLocaleString()}
+                          </span>
+                          {item.discountPercentage && item.discountPercentage > 0 && (
+                            <Badge className="bg-eco-100 text-eco-700">
+                              {item.discountPercentage}% off
+                            </Badge>
+                          )}
+                        </div>
+                        {item.originalPrice && item.originalPrice > item.salePrice && (
+                          <p className="text-sm text-muted-foreground">
+                            <span className="line-through">₹{item.originalPrice.toLocaleString()}</span>
+                            {" • "}
+                            Save ₹{(item.originalPrice - item.salePrice).toLocaleString()}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                        <span className="flex items-center gap-1">
+                          <Eye className="h-3 w-3" />
+                          {item.views || 0} views
+                        </span>
+                        <span>by {item.sellerName}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <Leaf className="h-3 w-3 text-eco-500" />
+                          <span className="text-xs text-eco-600">
+                            Eco Score: {item.ecoScore || 85}%
+                          </span>
+                        </div>
+                        <Button size="sm" className="bg-primary hover:bg-primary/90">
+                          <ShoppingCart className="h-3 w-3 mr-1" />
+                          Buy Now
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="text-center p-12">
+                <Store className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  No Items Available
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  Be the first to list an item for sale and help others find great deals on eco-friendly products!
+                </p>
+                <Button
+                  onClick={() => setShowSellForm(true)}
+                  className="bg-primary hover:bg-primary/90"
+                >
+                  <Tag className="h-4 w-4 mr-2" />
+                  List Your First Item
+                </Button>
+              </Card>
+            )}
+          </div>
         )}
       </main>
     </div>
