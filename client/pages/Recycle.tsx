@@ -351,7 +351,7 @@ export default function RecyclePage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-muted-foreground text-sm">CO₂ Impact</p>
+                  <p className="text-muted-foreground text-sm">CO��� Impact</p>
                   <p className="text-2xl font-bold">
                     {recycledItems
                       .reduce((sum, item) => sum + item.co2Impact, 0)
