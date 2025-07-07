@@ -285,11 +285,40 @@ export default function RecyclePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            ♻️ Recycling Center
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            ♻️ Recycling Center & Marketplace
           </h1>
+
+          {/* Tab Navigation */}
+          <div className="flex space-x-1 bg-muted p-1 rounded-lg mb-4 max-w-md">
+            <button
+              onClick={() => setActiveTab("recycle")}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === "recycle"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Recycle className="h-4 w-4 inline mr-2" />
+              Recycle Items
+            </button>
+            <button
+              onClick={() => setActiveTab("marketplace")}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === "marketplace"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Store className="h-4 w-4 inline mr-2" />
+              Marketplace
+            </button>
+          </div>
+
           <p className="text-muted-foreground">
-            Turn your unwanted items into EcoCredits and help the environment
+            {activeTab === "recycle"
+              ? "Turn your unwanted items into EcoCredits and help the environment"
+              : "Buy and sell eco-friendly second-hand items at great prices"}
           </p>
         </div>
 
