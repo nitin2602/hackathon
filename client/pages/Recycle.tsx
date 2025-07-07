@@ -375,15 +375,25 @@ export default function RecyclePage() {
           </Card>
         </div>
 
-        {/* Add Item Button */}
+        {/* Action Buttons */}
         <div className="mb-8">
-          <Button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="bg-eco-500 hover:bg-eco-600"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Item for Recycling
-          </Button>
+          {activeTab === "recycle" ? (
+            <Button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="bg-eco-500 hover:bg-eco-600"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Item for Recycling
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setShowSellForm(!showSellForm)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Tag className="h-4 w-4 mr-2" />
+              Sell an Item
+            </Button>
+          )}
         </div>
 
         {/* Add Item Form */}
