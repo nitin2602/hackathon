@@ -14,7 +14,7 @@ import {
   Clock,
   CheckCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useActivity } from "@/context/ActivityContext";
 
@@ -154,8 +154,18 @@ export default function Rewards() {
   const { addActivity } = useActivity();
   const [showHistory, setShowHistory] = useState(false);
   const [redeemedRewards, setRedeemedRewards] = useState<string[]>([]);
+  const [availableCartCredits, setAvailableCartCredits] = useState<any[]>([]);
 
   const currentEcoCredits = user?.ecoCredits || 0;
+
+  // Load available cart credits
+  useEffect(() => {
+    const cartCredits = JSON.parse(
+      localStorage.getItem("ecocreds_cart_credits") || "[]",
+    );
+    const unusedCredits = cartCredits.filter((credit: any) => !credit.used);
+    setAvailableCartCredits(unusedCredits);
+  }, [redeemedRewards]);
 
   const handleRedeem = (reward: Reward) => {
     if (currentEcoCredits >= reward.ecoCreditsRequired && user) {
@@ -268,6 +278,57 @@ export default function Rewards() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Available Cart Credits */}
+        {availableCartCredits.length > 0 && (
+          <Card className="mb-8 border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-purple-700">
+                <Coins className="h-5 w-5" />
+                Your Available Cart Credits
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {availableCartCredits.map((credit, index) => (
+                  <div
+                    key={credit.id}
+                    className="p-4 bg-white rounded-lg border border-purple-200 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge className="bg-purple-500">
+                        ₹{credit.value} OFF
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Unused
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium mb-1">{credit.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Min order: ₹{credit.minOrderValue}
+                    </p>
+                    <p className="text-xs text-purple-600 mt-1">
+                      💡 Will be auto-applied at checkout
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                <p className="text-sm text-purple-700">
+                  💰 Total Credits Available: ₹
+                  {availableCartCredits.reduce(
+                    (sum, credit) => sum + credit.value,
+                    0,
+                  )}
+                </p>
+                <p className="text-xs text-purple-600 mt-1">
+                  These credits will be automatically applied to eligible orders
+                  during checkout.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Redemption History */}
         {showHistory && (
