@@ -3,6 +3,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { connectDB } from "./config/database.js";
 import userRoutes from "./routes/users.js";
+import marketplaceRoutes from "./routes/marketplace.js";
 
 export function createServer() {
   const app = express();
@@ -24,6 +25,9 @@ export function createServer() {
 
   // User routes
   app.use("/api/users", userRoutes);
+
+  // Marketplace routes
+  app.use("/api/marketplace", marketplaceRoutes);
 
   return app;
 }
