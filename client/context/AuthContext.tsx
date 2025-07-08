@@ -142,7 +142,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const fallbackUserData = localStorage.getItem("ecocreds_user_fallback");
 
     if (savedUserEmail) {
-      // Try to load user data from MongoDB, fallback to localStorage
+      // Check if we have fallback data first (for frontend-only deployments)
+      if (fallbackUserData) {
+        try {
+          const userData = JSON.parse(fallbackUserData);
+          const convertedUser = convertUserData(userData);
+          setUser(convertedUser);
+          setIsAuthenticated(true);
+          return;
+        } catch (e) {
+          console.error("Failed to parse fallback data:", e);
+          localStorage.removeItem("ecocreds_user_email");
+          localStorage.removeItem("ecocreds_user_fallback");
+          return;
+        }
+      }
+
+      // Try to load user data from MongoDB if API is available
       userAPI
         .getUser(savedUserEmail)
         .then((userData) => {
@@ -160,20 +176,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         })
         .catch((error) => {
-          console.warn("API unavailable, using fallback data:", error);
-          // Use cached data if API is unavailable
-          if (fallbackUserData) {
-            try {
-              const userData = JSON.parse(fallbackUserData);
-              const convertedUser = convertUserData(userData);
-              setUser(convertedUser);
-              setIsAuthenticated(true);
-            } catch (e) {
-              console.error("Failed to parse fallback data:", e);
-              localStorage.removeItem("ecocreds_user_email");
-              localStorage.removeItem("ecocreds_user_fallback");
-            }
-          }
+          console.warn(
+            "API unavailable, user will need to log in again:",
+            error,
+          );
+          // Clear saved data if API is unavailable and no fallback exists
+          localStorage.removeItem("ecocreds_user_email");
+          localStorage.removeItem("ecocreds_user_fallback");
         });
     }
   }, []);
@@ -199,9 +208,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.warn("API unavailable, using fallback authentication:", error);
 
-      // Demo user fallback for alex@example.com when API is unavailable
-      if (email === "alex@example.com" && password === "password") {
-        const demoUser: UserData = {
+      // Demo users fallback when API is unavailable
+      const demoUsers = [
+        {
           email: "alex@example.com",
           password: "password",
           name: "Alex Johnson",
@@ -212,15 +221,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           level: "Eco Champion",
           progressToNext: 75,
           badgesEarned: ["EcoShopper", "Offset Champion", "Tree Planter"],
-        };
+        },
+        {
+          email: "demo@example.com",
+          password: "demo",
+          name: "Demo User",
+          ecoCredits: 500,
+          co2SavedThisMonth: 8.2,
+          co2SavedTotal: 65.4,
+          purchasesCount: 15,
+          level: "Green Shopper",
+          progressToNext: 45,
+          badgesEarned: ["EcoShopper"],
+        },
+      ];
 
-        const convertedUser = convertUserData(demoUser);
+      const matchedUser = demoUsers.find(
+        (user) => user.email === email && user.password === password,
+      );
+
+      if (matchedUser) {
+        const convertedUser = convertUserData(matchedUser);
         setUser(convertedUser);
         setIsAuthenticated(true);
         localStorage.setItem("ecocreds_user_email", email);
         localStorage.setItem(
           "ecocreds_user_fallback",
-          JSON.stringify(demoUser),
+          JSON.stringify(matchedUser),
         );
         return true;
       }
