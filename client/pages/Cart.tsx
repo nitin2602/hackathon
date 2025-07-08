@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/ui/navbar";
-import { AlternativesSystem } from "@/components/ui/alternatives-system";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import {
   ShoppingCart,
   Leaf,
-  TrendingDown,
   Trash2,
   Plus,
   Minus,
@@ -33,11 +31,11 @@ export default function Cart() {
     getTotalCO2,
   } = useCart();
   const { user } = useAuth();
-  const [showAlternatives, setShowAlternatives] = useState<string | null>(null);
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [availableCartCredits, setAvailableCartCredits] = useState<any[]>([]);
   const [appliedCredits, setAppliedCredits] = useState<any[]>([]);
+  const [appliedEcoCredits, setAppliedEcoCredits] = useState(0);
 
   // Calculations
   const subtotal = getTotalPrice();
@@ -58,9 +56,10 @@ export default function Cart() {
     0,
   );
   const ecoCreditsEarned = Math.floor(subtotal / 100) * 5;
+  const ecoCreditsDiscount = appliedEcoCredits; // 1 EcoCredit = 1 INR
   const total = Math.max(
     0,
-    subtotal + deliveryFee + offsetFee - totalCartCredits,
+    subtotal + deliveryFee + offsetFee - totalCartCredits - ecoCreditsDiscount,
   );
 
   const getEcoScoreColor = (score: number) => {
@@ -83,6 +82,19 @@ export default function Cart() {
 
   const handleRemoveCartCredit = (creditId: string) => {
     setAppliedCredits(appliedCredits.filter((c) => c.id !== creditId));
+  };
+
+  const handleApplyEcoCredits = () => {
+    const availableEcoCredits = user?.ecoCredits || 0;
+    const maxApplicable = Math.min(
+      availableEcoCredits,
+      subtotal + deliveryFee + offsetFee - totalCartCredits,
+    );
+    setAppliedEcoCredits(maxApplicable);
+  };
+
+  const handleRemoveEcoCredits = () => {
+    setAppliedEcoCredits(0);
   };
 
   const getEligibleCredits = () => {
@@ -282,42 +294,8 @@ export default function Cart() {
                               )}
                             </div>
                           </div>
-
-                          {/* Alternatives Button */}
-                          {!item.isSustainable && (
-                            <div className="mt-3 pt-3 border-t">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  setShowAlternatives(
-                                    showAlternatives === item.id
-                                      ? null
-                                      : item.id,
-                                  )
-                                }
-                                className="w-full bg-eco-50 border-eco-200 text-eco-700 hover:bg-eco-100"
-                              >
-                                <TrendingDown className="h-4 w-4 mr-2" />
-                                {showAlternatives === item.id
-                                  ? "Hide Eco Alternatives"
-                                  : "🌱 View Eco Alternatives"}
-                              </Button>
-                            </div>
-                          )}
                         </div>
                       </div>
-
-                      {/* Alternatives System */}
-                      {showAlternatives === item.id && (
-                        <div className="mt-6 pt-6 border-t">
-                          <AlternativesSystem
-                            originalProduct={item}
-                            onAddToCart={addToCart}
-                            onClose={() => setShowAlternatives(null)}
-                          />
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 );
@@ -327,7 +305,7 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div className="space-y-6">
-            <Card key="order-summary">
+            <Card>
               <CardHeader>
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
@@ -371,6 +349,30 @@ export default function Cart() {
                 {deliveryOffset && (
                   <div className="text-xs text-eco-600 bg-eco-50 p-2 rounded">
                     🌱 +5 EcoCredits for choosing carbon-neutral delivery!
+                  </div>
+                )}
+
+                {/* EcoCredits Discount */}
+                {appliedEcoCredits > 0 && (
+                  <div className="flex justify-between items-center p-3 bg-eco-50 rounded-lg border border-eco-200">
+                    <div className="flex items-center gap-2">
+                      <Gift className="h-4 w-4 text-eco-600" />
+                      <span className="text-sm font-medium">
+                        EcoCredits Applied
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-600 font-semibold">
+                        -₹{appliedEcoCredits}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRemoveEcoCredits}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
                 )}
 
@@ -496,9 +498,20 @@ export default function Cart() {
                       Proceed to Checkout
                     </Link>
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant={appliedEcoCredits > 0 ? "default" : "outline"}
+                    className="w-full"
+                    onClick={
+                      appliedEcoCredits > 0
+                        ? handleRemoveEcoCredits
+                        : handleApplyEcoCredits
+                    }
+                    disabled={!user?.ecoCredits || user.ecoCredits === 0}
+                  >
                     <Gift className="h-4 w-4 mr-2" />
-                    Use EcoCredits ({user?.ecoCredits || 0} available)
+                    {appliedEcoCredits > 0
+                      ? `Remove EcoCredits (-₹${appliedEcoCredits})`
+                      : `Use EcoCredits (${user?.ecoCredits || 0} available)`}
                   </Button>
                 </div>
 
@@ -526,10 +539,7 @@ export default function Cart() {
             </Card>
 
             {/* Sustainability Score */}
-            <Card
-              key="eco-score"
-              className="bg-gradient-to-br from-eco-50 to-earth-50 border-eco-200"
-            >
+            <Card className="bg-gradient-to-br from-eco-50 to-earth-50 border-eco-200">
               <CardHeader>
                 <CardTitle className="text-eco-700">Cart Eco Score</CardTitle>
               </CardHeader>

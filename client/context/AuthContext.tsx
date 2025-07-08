@@ -34,6 +34,7 @@ interface AuthContextType {
     co2Saved: number;
     price: number;
   }) => void;
+  deductEcoCredits: (amount: number) => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -340,12 +341,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const deductEcoCredits = async (amount: number) => {
+    if (!user || amount <= 0) return;
+
+    try {
+      // Update user EcoCredits in MongoDB by deducting the amount
+      await userAPI.updateUserStats(user.email, {
+        ecoCredits: -amount, // Negative amount to deduct
+        co2SavedTotal: 0,
+        co2SavedThisMonth: 0,
+        purchasesCount: 0,
+      });
+
+      // Update local state
+      const updatedUser: User = {
+        ...user,
+        ecoCredits: Math.max(0, user.ecoCredits - amount), // Ensure it doesn't go below 0
+      };
+
+      // Update level based on new EcoCredits
+      const levelInfo = calculateLevel(updatedUser.ecoCredits);
+      updatedUser.currentLevel = levelInfo.currentLevel;
+      updatedUser.nextLevel = levelInfo.nextLevel;
+      updatedUser.progressToNext = levelInfo.progressToNext;
+
+      // Update badges
+      updatedUser.badgesEarned = getBadges(updatedUser);
+
+      setUser(updatedUser);
+    } catch (error) {
+      console.error("Error deducting EcoCredits:", error);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     login,
     signup,
     logout,
     updateUserStats,
+    deductEcoCredits,
     isAuthenticated,
   };
 
