@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/ui/navbar";
-import { AlternativesSystem } from "@/components/ui/alternatives-system";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import {
   ShoppingCart,
   Leaf,
-  TrendingDown,
   Trash2,
   Plus,
   Minus,
@@ -33,7 +31,6 @@ export default function Cart() {
     getTotalCO2,
   } = useCart();
   const { user } = useAuth();
-  const [showAlternatives, setShowAlternatives] = useState<string | null>(null);
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [availableCartCredits, setAvailableCartCredits] = useState<any[]>([]);
@@ -282,42 +279,8 @@ export default function Cart() {
                               )}
                             </div>
                           </div>
-
-                          {/* Alternatives Button */}
-                          {!item.isSustainable && (
-                            <div className="mt-3 pt-3 border-t">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  setShowAlternatives(
-                                    showAlternatives === item.id
-                                      ? null
-                                      : item.id,
-                                  )
-                                }
-                                className="w-full bg-eco-50 border-eco-200 text-eco-700 hover:bg-eco-100"
-                              >
-                                <TrendingDown className="h-4 w-4 mr-2" />
-                                {showAlternatives === item.id
-                                  ? "Hide Eco Alternatives"
-                                  : "🌱 View Eco Alternatives"}
-                              </Button>
-                            </div>
-                          )}
                         </div>
                       </div>
-
-                      {/* Alternatives System */}
-                      {showAlternatives === item.id && (
-                        <div className="mt-6 pt-6 border-t">
-                          <AlternativesSystem
-                            originalProduct={item}
-                            onAddToCart={addToCart}
-                            onClose={() => setShowAlternatives(null)}
-                          />
-                        </div>
-                      )}
                     </CardContent>
                   </Card>
                 );
