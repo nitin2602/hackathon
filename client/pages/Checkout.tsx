@@ -244,6 +244,11 @@ export default function Checkout() {
             );
           }
 
+          // Deduct applied EcoCredits first
+          if (appliedEcoCredits > 0) {
+            deductEcoCredits(appliedEcoCredits);
+          }
+
           // Update user stats
           updateUserStats({
             ecoCredits: ecoCreditsEarned,
