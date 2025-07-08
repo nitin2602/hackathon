@@ -34,44 +34,86 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const { user, isAuthenticated } = useAuth();
 
-  // Load activities from MongoDB when user is authenticated
+  // Load activities from localStorage or create demo data when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user?.email) {
+      // First try to load from localStorage
+      const saved = localStorage.getItem(`ecocreds_activities_${user.email}`);
+      if (saved) {
+        try {
+          const cachedActivities = JSON.parse(saved);
+          setActivities(cachedActivities);
+          return;
+        } catch (e) {
+          console.error("Failed to parse cached activities:", e);
+        }
+      }
+
+      // Create some demo activities for new users or when cache is empty
+      const demoActivities: Activity[] = [
+        {
+          id: "demo_1",
+          type: "purchase",
+          action: "Purchased",
+          item: "Organic Cotton T-shirt",
+          co2Saved: 2.3,
+          ecoCredits: 45,
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          timestamp: Date.now() - 2 * 24 * 60 * 60 * 1000,
+        },
+        {
+          id: "demo_2",
+          type: "recycle",
+          action: "Recycled",
+          item: "Plastic Bottles (x5)",
+          co2Saved: 0.8,
+          ecoCredits: 15,
+          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000,
+        },
+        {
+          id: "demo_3",
+          type: "badge",
+          action: "Earned badge",
+          item: "EcoShopper",
+          ecoCredits: 100,
+          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+          timestamp: Date.now() - 7 * 24 * 60 * 60 * 1000,
+        },
+      ];
+
+      setActivities(demoActivities);
+      localStorage.setItem(
+        `ecocreds_activities_${user.email}`,
+        JSON.stringify(demoActivities),
+      );
+
+      // Try to load from MongoDB if API is available (but don't block the UI)
       userAPI
         .getUserActivities(user.email, 50)
         .then((mongoActivities) => {
-          const convertedActivities: Activity[] = mongoActivities.map(
-            (activity) => ({
-              id: activity.timestamp.toString(),
-              type: activity.type,
-              action: activity.action,
-              item: activity.item,
-              co2Saved: activity.co2Saved,
-              ecoCredits: activity.ecoCredits,
-              date: new Date(activity.timestamp).toISOString(),
-              timestamp: activity.timestamp,
-            }),
-          );
-          setActivities(convertedActivities);
-          // Cache activities for offline access
-          localStorage.setItem(
-            "ecocreds_activities",
-            JSON.stringify(convertedActivities),
-          );
+          if (mongoActivities.length > 0) {
+            const convertedActivities: Activity[] = mongoActivities.map(
+              (activity) => ({
+                id: activity.timestamp.toString(),
+                type: activity.type,
+                action: activity.action,
+                item: activity.item,
+                co2Saved: activity.co2Saved,
+                ecoCredits: activity.ecoCredits,
+                date: new Date(activity.timestamp).toISOString(),
+                timestamp: activity.timestamp,
+              }),
+            );
+            setActivities(convertedActivities);
+            localStorage.setItem(
+              `ecocreds_activities_${user.email}`,
+              JSON.stringify(convertedActivities),
+            );
+          }
         })
         .catch((error) => {
-          console.warn("API unavailable, using cached activities:", error);
-          // Fallback to localStorage
-          const saved = localStorage.getItem("ecocreds_activities");
-          if (saved) {
-            try {
-              const cachedActivities = JSON.parse(saved);
-              setActivities(cachedActivities);
-            } catch (e) {
-              console.error("Failed to parse cached activities:", e);
-              setActivities([]);
-            }
-          }
+          console.warn("API unavailable, using local activities:", error);
         });
     } else {
       setActivities([]);
@@ -90,7 +132,17 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
       timestamp: Date.now(),
     };
 
-    // Add to MongoDB
+    // Update local state first
+    const updatedActivities = [newActivity, ...activities].slice(0, 50);
+    setActivities(updatedActivities);
+
+    // Save to localStorage immediately
+    localStorage.setItem(
+      `ecocreds_activities_${user.email}`,
+      JSON.stringify(updatedActivities),
+    );
+
+    // Try to add to MongoDB if API is available (but don't block the UI)
     try {
       const mongoActivity: ActivityData = {
         action: activityData.action,
@@ -102,21 +154,8 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
       };
 
       await userAPI.addActivity(user.email, mongoActivity);
-
-      // Update local state
-      const updatedActivities = [newActivity, ...activities].slice(0, 50);
-      setActivities(updatedActivities);
     } catch (error) {
-      console.error("Error adding activity:", error);
-      // Fallback to localStorage for offline support
-      const saved = localStorage.getItem("ecocreds_activities");
-      const localActivities = saved ? JSON.parse(saved) : [];
-      const updatedActivities = [newActivity, ...localActivities].slice(0, 50);
-      setActivities(updatedActivities);
-      localStorage.setItem(
-        "ecocreds_activities",
-        JSON.stringify(updatedActivities),
-      );
+      console.warn("API unavailable, activity saved locally:", error);
     }
   };
 

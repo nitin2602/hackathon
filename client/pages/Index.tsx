@@ -51,6 +51,31 @@ export default function Index() {
               footprint, earn EcoCredits, and make a positive impact on the
               planet.
             </p>
+
+            {/* Demo Credentials */}
+            <Card className="mb-8 bg-eco-50 border-eco-200">
+              <CardHeader>
+                <CardTitle className="text-eco-700">Try the Demo</CardTitle>
+              </CardHeader>
+              <CardContent className="text-left">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Use these demo credentials to explore the app:
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="bg-white p-3 rounded border">
+                    <strong>Email:</strong> alex@example.com
+                    <br />
+                    <strong>Password:</strong> password
+                  </div>
+                  <div className="bg-white p-3 rounded border">
+                    <strong>Email:</strong> demo@example.com
+                    <br />
+                    <strong>Password:</strong> demo
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <div className="flex gap-4 justify-center">
               <Button asChild size="lg">
                 <Link to="/signup">Get Started</Link>
