@@ -327,7 +327,7 @@ export default function Cart() {
 
           {/* Order Summary */}
           <div className="space-y-6">
-            <Card key="order-summary">
+            <Card>
               <CardHeader>
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
@@ -526,10 +526,7 @@ export default function Cart() {
             </Card>
 
             {/* Sustainability Score */}
-            <Card
-              key="eco-score"
-              className="bg-gradient-to-br from-eco-50 to-earth-50 border-eco-200"
-            >
+            <Card className="bg-gradient-to-br from-eco-50 to-earth-50 border-eco-200">
               <CardHeader>
                 <CardTitle className="text-eco-700">Cart Eco Score</CardTitle>
               </CardHeader>
