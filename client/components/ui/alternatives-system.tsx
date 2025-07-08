@@ -304,9 +304,9 @@ export function AlternativesSystem({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {alternatives.map((alternative, index) => (
+            {alternatives.map((alternative) => (
               <div
-                key={index}
+                key={alternative.product.id}
                 className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg"
               >
                 {alternative.product.image && (
