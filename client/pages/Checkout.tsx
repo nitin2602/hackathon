@@ -186,14 +186,12 @@ export default function Checkout() {
           );
         }
 
-        // Deduct applied EcoCredits first
-        if (appliedEcoCredits > 0) {
-          deductEcoCredits(appliedEcoCredits);
-        }
+        // Calculate net EcoCredits change (earned - spent)
+        const netEcoCreditsChange = ecoCreditsEarned - appliedEcoCredits;
 
-        // Update user stats
+        // Update user stats with net EcoCredits change
         updateUserStats({
-          ecoCredits: ecoCreditsEarned,
+          ecoCredits: netEcoCreditsChange,
           co2Saved: totalCO2,
           price: total,
         });
@@ -244,14 +242,12 @@ export default function Checkout() {
             );
           }
 
-          // Deduct applied EcoCredits first
-          if (appliedEcoCredits > 0) {
-            deductEcoCredits(appliedEcoCredits);
-          }
+          // Calculate net EcoCredits change (earned - spent)
+          const netEcoCreditsChange = ecoCreditsEarned - appliedEcoCredits;
 
-          // Update user stats
+          // Update user stats with net EcoCredits change
           updateUserStats({
-            ecoCredits: ecoCreditsEarned,
+            ecoCredits: netEcoCreditsChange,
             co2Saved: totalCO2,
             price: total,
           });
