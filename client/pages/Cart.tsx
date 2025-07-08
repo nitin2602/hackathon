@@ -35,6 +35,7 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
   const [availableCartCredits, setAvailableCartCredits] = useState<any[]>([]);
   const [appliedCredits, setAppliedCredits] = useState<any[]>([]);
+  const [appliedEcoCredits, setAppliedEcoCredits] = useState(0);
 
   // Calculations
   const subtotal = getTotalPrice();
@@ -55,9 +56,10 @@ export default function Cart() {
     0,
   );
   const ecoCreditsEarned = Math.floor(subtotal / 100) * 5;
+  const ecoCreditsDiscount = appliedEcoCredits; // 1 EcoCredit = 1 INR
   const total = Math.max(
     0,
-    subtotal + deliveryFee + offsetFee - totalCartCredits,
+    subtotal + deliveryFee + offsetFee - totalCartCredits - ecoCreditsDiscount,
   );
 
   const getEcoScoreColor = (score: number) => {
@@ -80,6 +82,19 @@ export default function Cart() {
 
   const handleRemoveCartCredit = (creditId: string) => {
     setAppliedCredits(appliedCredits.filter((c) => c.id !== creditId));
+  };
+
+  const handleApplyEcoCredits = () => {
+    const availableEcoCredits = user?.ecoCredits || 0;
+    const maxApplicable = Math.min(
+      availableEcoCredits,
+      subtotal + deliveryFee + offsetFee - totalCartCredits,
+    );
+    setAppliedEcoCredits(maxApplicable);
+  };
+
+  const handleRemoveEcoCredits = () => {
+    setAppliedEcoCredits(0);
   };
 
   const getEligibleCredits = () => {
@@ -337,6 +352,30 @@ export default function Cart() {
                   </div>
                 )}
 
+                {/* EcoCredits Discount */}
+                {appliedEcoCredits > 0 && (
+                  <div className="flex justify-between items-center p-3 bg-eco-50 rounded-lg border border-eco-200">
+                    <div className="flex items-center gap-2">
+                      <Gift className="h-4 w-4 text-eco-600" />
+                      <span className="text-sm font-medium">
+                        EcoCredits Applied
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-600 font-semibold">
+                        -₹{appliedEcoCredits}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRemoveEcoCredits}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Cart Credits Section */}
                 {(availableCartCredits.length > 0 ||
                   appliedCredits.length > 0) && (
@@ -459,9 +498,20 @@ export default function Cart() {
                       Proceed to Checkout
                     </Link>
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant={appliedEcoCredits > 0 ? "default" : "outline"}
+                    className="w-full"
+                    onClick={
+                      appliedEcoCredits > 0
+                        ? handleRemoveEcoCredits
+                        : handleApplyEcoCredits
+                    }
+                    disabled={!user?.ecoCredits || user.ecoCredits === 0}
+                  >
                     <Gift className="h-4 w-4 mr-2" />
-                    Use EcoCredits ({user?.ecoCredits || 0} available)
+                    {appliedEcoCredits > 0
+                      ? `Remove EcoCredits (-₹${appliedEcoCredits})`
+                      : `Use EcoCredits (${user?.ecoCredits || 0} available)`}
                   </Button>
                 </div>
 
