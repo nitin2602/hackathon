@@ -34,6 +34,7 @@ interface AuthContextType {
     co2Saved: number;
     price: number;
   }) => void;
+  deductEcoCredits: (amount: number) => Promise<void>;
   isAuthenticated: boolean;
 }
 
