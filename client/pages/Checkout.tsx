@@ -28,7 +28,8 @@ declare global {
 
 export default function Checkout() {
   const { cartItems, getTotalPrice, getTotalCO2, clearCart } = useCart();
-  const { user, updateUserStats, isAuthenticated } = useAuth();
+  const { user, updateUserStats, deductEcoCredits, isAuthenticated } =
+    useAuth();
   const { addActivity } = useActivity();
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
