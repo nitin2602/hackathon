@@ -33,6 +33,7 @@ export default function Checkout() {
   const [deliveryOffset, setDeliveryOffset] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [appliedCartCredits, setAppliedCartCredits] = useState<any[]>([]);
+  const [appliedEcoCredits, setAppliedEcoCredits] = useState(0);
   const navigate = useNavigate();
 
   // Load applied cart credits from localStorage or cart context
@@ -56,6 +57,19 @@ export default function Checkout() {
       setAppliedCartCredits([bestCredit]);
     }
   }, []);
+
+  const handleApplyEcoCredits = () => {
+    const availableEcoCredits = user?.ecoCredits || 0;
+    const maxApplicable = Math.min(
+      availableEcoCredits,
+      subtotal + deliveryFee + offsetFee - totalCartCredits,
+    );
+    setAppliedEcoCredits(maxApplicable);
+  };
+
+  const handleRemoveEcoCredits = () => {
+    setAppliedEcoCredits(0);
+  };
 
   // Redirect if not authenticated
   if (!isAuthenticated || !user) {
@@ -115,9 +129,10 @@ export default function Checkout() {
   );
   const ecoCreditsEarned =
     Math.floor(subtotal / 100) * 5 + (deliveryOffset ? 5 : 0);
+  const ecoCreditsDiscount = appliedEcoCredits; // 1 EcoCredit = 1 INR
   const total = Math.max(
     0,
-    subtotal + deliveryFee + offsetFee - totalCartCredits,
+    subtotal + deliveryFee + offsetFee - totalCartCredits - ecoCreditsDiscount,
   );
 
   const handlePayment = async () => {
@@ -398,6 +413,30 @@ export default function Checkout() {
                   </div>
                 </div>
 
+                {/* EcoCredits Discount */}
+                {appliedEcoCredits > 0 && (
+                  <div className="flex justify-between items-center p-3 bg-eco-50 rounded-lg border border-eco-200">
+                    <div className="flex items-center gap-2">
+                      <Gift className="h-4 w-4 text-eco-600" />
+                      <span className="text-sm font-medium">
+                        EcoCredits Applied
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-green-600 font-semibold">
+                        -₹{appliedEcoCredits}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRemoveEcoCredits}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Applied Cart Credits */}
                 {appliedCartCredits.length > 0 && (
                   <div className="space-y-2">
@@ -434,6 +473,37 @@ export default function Checkout() {
                     💰 You saved ₹{totalCartCredits} with cart credits!
                   </div>
                 )}
+
+                {/* EcoCredits Application */}
+                <div className="pt-4">
+                  <Button
+                    variant={appliedEcoCredits > 0 ? "default" : "outline"}
+                    className="w-full"
+                    onClick={
+                      appliedEcoCredits > 0
+                        ? handleRemoveEcoCredits
+                        : handleApplyEcoCredits
+                    }
+                    disabled={!user?.ecoCredits || user.ecoCredits === 0}
+                  >
+                    <Gift className="h-4 w-4 mr-2" />
+                    {appliedEcoCredits > 0
+                      ? `Remove EcoCredits (-₹${appliedEcoCredits})`
+                      : `Use EcoCredits (${user?.ecoCredits || 0} available)`}
+                  </Button>
+                  {appliedEcoCredits === 0 &&
+                    user?.ecoCredits &&
+                    user.ecoCredits > 0 && (
+                      <p className="text-xs text-muted-foreground text-center mt-2">
+                        Apply up to ₹
+                        {Math.min(
+                          user.ecoCredits,
+                          subtotal + deliveryFee + offsetFee - totalCartCredits,
+                        )}{" "}
+                        discount with your EcoCredits
+                      </p>
+                    )}
+                </div>
               </CardContent>
             </Card>
 
